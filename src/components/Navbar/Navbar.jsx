@@ -63,10 +63,10 @@ const Navbar = () => {
               <span className="text">{currentUser?.username}</span>
               <div
                 className="options absolute top-12 right-0 bg-white p-5 rounded-lg 
-                flex flex-col gap-2 border border-solid border-gray-300"
+                flex flex-col gap-2 border border-solid border-gray-300 text-slate-500"
               >
                 {currentUser.isSeller && (
-                  <div className="seller flex flex-col items-center gap-2">
+                  <div className="seller flex flex-col gap-2">
                     <span className="text">Gigs</span>
                     <span className="text">Add New Gig</span>
                   </div>
