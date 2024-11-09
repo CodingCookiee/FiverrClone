@@ -4,6 +4,7 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,18 +55,22 @@ const Navbar = () => {
             </button>
           )}
           {currentUser && (
-            <div className="user flex items-center gap-2 cursor-pointer relative">
+            <div className="user flex items-center 
+            gap-2 cursor-pointer relative"
+            onClick={() => setOpen(!open)}>
               <img
                 src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 alt=""
                 className="w-8 h-8 rounded-full object-cover"
               />
               <span className="text">{currentUser?.username}</span>
-              <div
-                className="options absolute top-12 right-0 bg-white p-5 rounded-lg 
-                flex flex-col gap-2 border border-solid border-gray-300 text-slate-500"
+              {open && (
+                <div
+                className="options absolute top-12 right-0 bg-white p-5 
+                rounded-lg flex flex-col gap-2 border border-solid
+                border-gray-300 text-slate-500 w-[250px]"
               >
-                {currentUser.isSeller && (
+                {currentUser?.isSeller && (
                   <div className="seller flex flex-col gap-2">
                     <span className="text">Gigs</span>
                     <span className="text">Add New Gig</span>
@@ -75,6 +80,7 @@ const Navbar = () => {
                 <span className="text">Messages</span>
                 <span className="text">Log Out</span>
               </div>
+              )}
             </div>
           )}
         </div>
