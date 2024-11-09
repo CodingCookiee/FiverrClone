@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import Footer from "./components/footer/Footer";s
+import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
 import {
   createBrowserRouter,
@@ -28,7 +28,7 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <Home />,
+          element: <Home/>
         },
       ],
   
