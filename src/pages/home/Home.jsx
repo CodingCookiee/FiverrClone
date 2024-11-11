@@ -3,9 +3,10 @@ import React from 'react';
 import Featured from '../../components/featured/Featured';
 import TrustedBy from '../../components/trustedBy/trustedBy';
 import Slide from '../../components/slides/Slides';
-import { cards } from '../../data.js';
+import { cards, projects } from '../../data.js';
 import CatCard from '../../components/cateogryCard/categoryCard';
 import Features from '../../components/features/Features.jsx';
+import ProjectCard from '../../components/projectCard/projectCard';
 
 
 const Home = () => {
@@ -13,12 +14,17 @@ const Home = () => {
         <div className="home">
             <Featured />
             <TrustedBy />
-            <Slide slidesToShow={5} arrowsScroll={3}>
+            <Slide slidesToShow={5} >
                 {cards.map((card) => (
                     <CatCard key={card.id} card={card} />
                 ))}
             </Slide>
             <Features/>
+            <Slide slidesToShow={4} arrowsScroll={4}>
+        {projects.map((card) => (
+          <ProjectCard key={card.id} card={card} />
+        ))}
+      </Slide>
         </div>
     );
 };
