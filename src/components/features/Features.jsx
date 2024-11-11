@@ -148,35 +148,37 @@ const Features = () => {
           </div>
         </div>
       </div>
-      <div className="features dark bg-[#0d084d] flex justify-center p-[100px] pl-0 pr-0">
-        <div className="container text-white">
+      <div className="features dark bg-[#0d084d] p-[100px] pl-0 pr-0 flex justify-center items-center">
+        <div className="container text-white flex items-center justify-between w-[1400px] gap-5">
           <div className="item">
-            <h1>
-              deliverr <i className="font-light">business</i>
+            <h1 className="font-bold text-4xl mb-2.5">
+              Fiverr <i className="font-light">business</i>
             </h1>
-            <h1>
+            <h1 className="font-bold text-3xl mb-5">
               A business solution designed for <i className="font-light">teams</i>
             </h1>
-            <p className={`${paraClass} mb-5`}>
+            <p className= 'text-white mb-5 text-lg'>
               Upgrade to a curated experience packed with tools and benefits,
               dedicated to businesses
             </p>
-            <div className="title text-white font-light text-md">
-              <img src="./img/check.png" alt="" />
+            <div className="title text-white font-light text-md flex gap-2.5 mb-3">
+              <img src="check.png" alt="" className="w-5 h-5" />
               Connect to freelancers with proven business experience
             </div>
 
-            <div className="title text-white font-light text-md">
-              <img src="./img/check.png" alt="" />
+            <div className="title text-white font-light text-md flex gap-2.5 mb-2">
+              <img src="check.png" alt="" className="w-5 h-5" />
               Get matched with the perfect talent by a customer success manager
             </div>
 
-            <div className="title">
-              <img src="./img/check.png" alt="" />
+            <div className="title text-white font-light text-md flex gap-2.5 mb-1" >
+              <img src="/check.png" alt=""  className="w-5 h-5"/>
               Manage teamwork and boost productivity with one powerful workspace
             </div>
             <button className="bg-[#1dbf73] border-none text-white
-             p-[10px] pl-[20px] pr-[20px] rounded-sm w-max cursor-pointer text-md mt-5">Explore Liverr Business</button>
+             p-[10px] pl-[20px] pr-[20px] rounded-sm w-max cursor-pointer text-md mt-5">
+             Explore Fiverr Business
+             </button>
           </div>
           <div className="item">
             <img
