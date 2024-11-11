@@ -10,7 +10,7 @@ const Featured = () => {
       <div className="featured__container flex items-center w-[1400px]">
         <div className="featured__left flex flex-col gap-8">
           <h1 className="text-6xl font-normal">
-            Find the perfect <span>freelance</span> services for your business
+            Find the perfect <i className="font-light ">freelance</i> services for your business
           </h1>
           <div className="search flex items-center justify-between
            bg-white rounded-md overflow-hidden">
