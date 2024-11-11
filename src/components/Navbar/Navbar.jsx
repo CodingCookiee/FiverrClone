@@ -31,8 +31,8 @@ const Navbar = () => {
     <div
       className={
         active || pathname !== "/"
-          ? "navbar flex flex-col items-center bg-white text-black font-[Montserrat] sticky top-0"
-          : "navbar flex flex-col items-center bg-[#013914] text-white font-[Montserrat] sticky top-0"
+          ? "navbar z-50 flex flex-col items-center bg-white text-black font-[Montserrat] sticky top-0"
+          : "navbar z-50 flex flex-col items-center bg-[#013914] text-white font-[Montserrat] sticky top-0"
       }
     >
       <div className="container w-[1400px] flex justify-between p-5 pl-0 pr-0">

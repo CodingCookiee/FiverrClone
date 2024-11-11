@@ -34,7 +34,7 @@ const NextArrow = ({ onClick }) => (
 const Slide = ({ children, slidesToShow }) => {
   const settings = {
     slidesToShow: slidesToShow,
-    slidesToScroll: 2,
+    slidesToScroll: 3,
     dots: true,
     infinite: true,
     speed: 500,

@@ -5,6 +5,8 @@ import TrustedBy from '../../components/trustedBy/trustedBy';
 import Slide from '../../components/slides/Slides';
 import { cards } from '../../data.js';
 import CatCard from '../../components/cateogryCard/categoryCard';
+import Features from '../../components/features/Features.jsx';
+
 
 const Home = () => {
     return (
@@ -16,6 +18,7 @@ const Home = () => {
                     <CatCard key={card.id} card={card} />
                 ))}
             </Slide>
+            <Features/>
         </div>
     );
 };
