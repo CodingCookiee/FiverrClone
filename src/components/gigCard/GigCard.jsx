@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const GigCard = ({ item }) => {
     return (
         <Link to='/gig/123456789' className='link'>
-            <div className='gig-card w-[324px] h-[400px] border border-solid border-[rgb(228, 228, 228)] mb-[40px]'>
+            <div className='gig-card w-[324px] h-[440px] border border-solid border-[rgb(228, 228, 228)] mb-[40px]'>
                 <img src={item.img} alt='' className='w-full h-[50%] object-cover'/>
                 <div className='info p-2.5 pl-5 pr-5 flex flex-col gap-5'>
                     <div className='user flex items-center gap-2.5'>
@@ -19,7 +19,7 @@ const GigCard = ({ item }) => {
                     </div>
                 </div>
                 <hr className='h-0 border-[0.5px] border-solid border-[rgb(228, 228, 228)]'/>
-                <div className='detail p-2.5 pl-5 pr-5 flex items-center justify-between'>
+                <div className='detail p-1 pl-5 pr-5 flex items-center justify-between'>
                    <img src='/heart.png' alt='' className='w-[16px] h-[16px] cursor-pointer object-cover'/>
                    <div className='price'>
                     <span className='text-[#999] text-xs'>STARTING AT</span>
