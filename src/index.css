@@ -92,13 +92,13 @@ ul[role='list'] {
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1; /* Light background for the track */
-  border-radius: 5px; /* Rounded corners for the track */
+  border-radius: 10px; /* Rounded corners for the track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #b3b3b3; /* Light grey thumb for simplicity */
+  background-color: #cfcece; /* Light grey thumb for simplicity */
   border-radius: 10px; /* Rounded corners for the thumb */
-  border: 2px solid #e0dfdf; /* Space between the thumb and track */
+  border: 2px solid #cfcece; /* Space between the thumb and track */
 }
 
 ::-webkit-scrollbar-thumb:hover {
