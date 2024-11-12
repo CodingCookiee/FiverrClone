@@ -34,7 +34,7 @@ const Gig = () => {
           <span className="breadcrumbs font-light text-uppercase text-[13px] text-[#555]">
             Fiverr > Graphics & Design >
           </span>
-          <h1 className="font-bold text-xl">
+          <h1 className="font-bold text-2xl">
             I will create ai generated art for you
           </h1>
           <div className="user flex items-center gap-2.5">
