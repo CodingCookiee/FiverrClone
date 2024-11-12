@@ -1,47 +1,36 @@
-// src/components/slides/Slide.js
+import './slides.css';
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Slider } from "infinite-react-carousel/lib";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; 
+import ProjectCard from "../../components/projectCard/ProjectCard.jsx"; // Import ProjectCard
 
-// Custom arrow components with light grey background styling
-const arrowStyle = {
-  backgroundColor: "lightgrey",
-  color:"lightgrey",
-  borderRadius: "50%",
-  padding: "30px",
-  border: "none",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  zIndex: 1, 
-};
-
+// Custom arrow components
 const PrevArrow = ({ onClick }) => (
-  <button style={{ ...arrowStyle, left: "-30px" }} onClick={onClick} className="slick-prev">
+  <button onClick={onClick} className="prev-arrow">
     <FaArrowLeft />
   </button>
 );
 
-const NextArrow = ({ onClick }) => (
-  <button style={{ ...arrowStyle, right: "-10px" }} onClick={onClick} className="slick-next">
+const NextArrow = ({ onClick, isProjectSlide }) => (
+  <button onClick={onClick} className="next-arrow" style={{ right: isProjectSlide ? '50px' : '28px' }}>
     <FaArrowRight />
   </button>
 );
 
 const Slide = ({ children, slidesToShow }) => {
+  // Check if any child is a ProjectCard
+  const isProjectSlide = React.Children.toArray(children).some(child => child.type === ProjectCard);
+
   const settings = {
     slidesToShow: slidesToShow,
-    slidesToScroll: 3,
+    arrowsScroll: 3,
     dots: true,
     infinite: true,
     speed: 500,
     swipeToSlide: true,
     arrows: true,
     prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    nextArrow: <NextArrow isProjectSlide={isProjectSlide} />,
   };
 
   return (

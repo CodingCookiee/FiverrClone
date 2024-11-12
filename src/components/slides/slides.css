@@ -1,1 +1,27 @@
 
+/* gig.css */
+
+/* Styling for custom prev and next arrows */
+.prev-arrow,
+.next-arrow {
+  width: 40px;
+  height: 40px;
+  background-color: rgb(243, 243, 243);
+  color: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Position adjustments */
+.prev-arrow {
+  left: 0px;
+}
+
