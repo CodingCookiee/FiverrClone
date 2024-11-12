@@ -4,7 +4,7 @@ import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
 import Gig from "./pages/gig/Gig";
 import Gigs from "./pages/gigs/Gigs";
-import Orders from "./pages/myOrders/Orders";
+import Orders from "./pages/Orders/Orders";
 import MyGigs from "./pages/myGigs/myGigs";
 import Add from "./pages/add/Add";
 import Messages from "./pages/messages/Messages";
