@@ -19,7 +19,6 @@ const NextArrow = ({ onClick }) => (
 const Gig = () => {
   const settings = {
     slidesToShow: 1,
-    dots: true,
     infinite: true,
     duration: 500,
     arrows: true,
