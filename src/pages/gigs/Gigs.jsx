@@ -59,10 +59,17 @@ const Gigs = () => {
             <span className="sortType font-medium ">
               {sort === "sales" ? "Best Selling" : "Newest"}
             </span>
-            <img src="/down.png" alt="" onClick={() => setOpen(!open)} className="cursor-pointer w-[17px]" />
+            <img
+              src="/down.png"
+              alt=""
+              onClick={() => setOpen(!open)}
+              className="cursor-pointer w-[17px]"
+            />
             {open && (
-              <div className="rightMenu p-5 bg-white absolute top-[30px] right-0 z-10 
-              flex flex-col gap-5 border border-solid border-[lightgrey] rounded-md text-[#555] cursor-pointer">
+              <div
+                className="rightMenu p-5 bg-white absolute top-[30px] right-0 z-10 
+              flex flex-col gap-5 border border-solid border-[lightgrey] rounded-md text-[#555] cursor-pointer"
+              >
                 {sort === "sales" ? (
                   <span onClick={() => reSort("createdAt")}>Newest</span>
                 ) : (
