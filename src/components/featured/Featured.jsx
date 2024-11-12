@@ -17,7 +17,8 @@ const Featured = () => {
             <div className="searchInput flex items-center gap-2.5">
               <img src="/search.png" alt="" className="w-5 h-5 m-2.5" />
               <input type="text" placeholder="Search for any service . . ."
-              className="w-[300px] h-8 rounded-md p-2 border-none outline-none" />
+              className="text-gray-500 w-[300px] h-8 rounded-md p-2 border-none
+               outline-none shadow-sm appearance-none focus:outline-none " />
             </div>
             <button className=" w-[120px] h-[50px] border-none bg-[#1dbf73] cursor-pointer">Search</button>
           </div>
