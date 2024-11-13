@@ -6,7 +6,7 @@
 ## [🔗LiveDemo](https://fiverruii.netlify.app) 
 
 
-![App Screenshot](/public/app.png)
+![App Screenshot](./frontend/public/app.png)
 
 
 ## Powered By
