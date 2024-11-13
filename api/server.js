@@ -3,6 +3,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToDatabase } from "./config/database.js";
 import userRoute from './routes/user.route.js';
+import gigRoute from './routes/gig.route.js';
+import orderRoute from './routes/order.route.js';
+import messageRoute from './routes/message.route.js';
+import reviewRoute from './routes/review.route.js';
+import conversationRoute from './routes/conversation.route.js';
+import authRoute from './routes/auth.route.js';
+
+
+
 
 
 dotenv.config();
@@ -18,7 +27,15 @@ app.use(
 
 app.use(express.json());
 
+// use routes
+app.use('/api/auths', authRoute);
 app.use('/api/users', userRoute);
+app.use('/api/gigs', gigRoute);
+app.use('/api/orders', orderRoute);
+app.use('/api/messages', messageRoute);
+app.use('/api/reviews', reviewRoute);
+app.use('/api/conversations', conversationRoute);
+
 
 
 
