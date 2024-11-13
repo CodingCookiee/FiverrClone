@@ -2,7 +2,7 @@ import './slides.css';
 import React from "react";
 import { Slider } from "infinite-react-carousel/lib";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; 
-import ProjectCard from "../../components/projectCard/ProjectCard.jsx"; // Import ProjectCard
+import ProjectCard from "../ProjectCard/ProjectCard.jsx"; // Import ProjectCard
 
 // Custom arrow components
 const PrevArrow = ({ onClick }) => (
