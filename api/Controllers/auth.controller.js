@@ -1,17 +1,19 @@
- // register a user
+import  User  from '../models/user.model.js'
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+// register a user
 export const register =
   ("/",
   async (req, res) => {
     try {
+      const hash = await bcrypt.hash(req.body.password, 10); 
       const newUser = new User({
-        username:'test',
-        email: 'test',
-        password: 'test', 
-        country:'test'
+        ...req.body,
+        password: hash,
       })
       const savedUser = await newUser.save()
       res.status(201).send('New User has been created');
-      res.json(savedUser)
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Internal server error" });
@@ -23,10 +25,10 @@ export const login =
   ("/",
   async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ email });
+      const { email, password, username } = req.body;
+      const user = await User.findOne({ username });
       if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(404).json({ message: "User not found" });
       }
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) {

@@ -28,7 +28,7 @@ app.use(
 app.use(express.json());
 
 // use routes
-app.use('/api/auths', authRoute);
+app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/gigs', gigRoute);
 app.use('/api/orders', orderRoute);
