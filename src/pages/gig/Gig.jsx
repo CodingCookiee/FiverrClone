@@ -32,7 +32,7 @@ const Gig = () => {
       <div className="container w-[1400px] flex gap-[50px] p-[30px] pl-0 pr-0">
         <div className="left flex-[2] flex flex-col gap-5">
           <span className="breadcrumbs font-light text-uppercase text-[13px] text-[#555]">
-            Fiverr > Graphics & Design >
+            Fiverr {'>'} Graphics & Design {'>'}
           </span>
           <h1 className="font-bold text-2xl">
             I will create ai generated art for you
@@ -146,7 +146,6 @@ const Gig = () => {
             <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
               <div className="user flex items-center">
                 <img
-                  className="pp"
                   src="https://images.pexels.com/photos/839586/pexels-photo-839586.jpeg?auto=compress&cs=tinysrgb&w=1600"
                   alt=""
                   className="w-[50px] h-[50px] rounded-[50%] object-cover"
@@ -191,10 +190,9 @@ const Gig = () => {
             <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
               <div className="user flex items-center">
                 <img
-                  className="pp"
                   src="https://images.pexels.com/photos/4124367/pexels-photo-4124367.jpeg?auto=compress&cs=tinysrgb&w=1600"
                   alt=""
-                  className="w-[50px] h-[50px] rounded-[50%] object-cover"
+                  className="pp w-[50px] h-[50px] rounded-[50%] object-cover"
                 />
                 <div className="info flex flex-col gap-0.5 ml-2">
                   <span>Sidney Owen</span>
@@ -234,10 +232,10 @@ const Gig = () => {
             <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
               <div className="user flex items-center">
                 <img
-                  className="pp"
+                 
                   src="https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1600"
                   alt=""
-                  className="w-[50px] h-[50px] rounded-[50%] object-cover"
+                  className="pp w-[50px] h-[50px] rounded-[50%] object-cover"
                 />
                 <div className="info flex flex-col gap-0.5 ml-2">
                   <span>Lyle Giles </span>

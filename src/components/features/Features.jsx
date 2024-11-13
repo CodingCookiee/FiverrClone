@@ -1,7 +1,8 @@
  import React from "react";
 
 const Features = () => {
-    const paraClass = "text-sm text-gray-500 font-light leading-7 tracking-normal	";
+
+    const paraClass = "text-sm text-gray-500 font-light leading-7 tracking-normal";
     const titleClass = "flex items-center gap-2.5 font-medium text-gray-500 text-xl";
     const img = "w-5 h-5";
     const expLine = "w-[50px] h-[2px] bg-gray-500 transition-all duration-1000 ease-in-out hover:w-[80px] hover:bg-[#1dbf73]"
@@ -33,7 +34,7 @@ const Features = () => {
               Protected payments, every time
             </div>
             <p className={paraClass}>
-              Always know what you'll pay upfront. Your payment isn't released
+              Always know what you&apos'll pay upfront. Your payment isn't released
               until you approve the work.
             </p>
             <div className={titleClass}>
@@ -190,5 +191,6 @@ const Features = () => {
       </div>
     </>
   );
-};
-export default Features;
+
+
+};export default Features;

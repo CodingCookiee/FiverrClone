@@ -7,7 +7,7 @@ const Message = () => {
     <div className="message flex justify-center">
       <div className="container w-[1400px] m-[50px]">
         <span className="breadcrumbs font-light text-[13px] text-[#555]">
-          <Link to="/messages">Messages</Link> > John Doe >
+          <Link to="/messages">Messages</Link> {'>'} John Doe {'>'}
         </span>
         <div className="messages m-[30px] ml-0 mr-0 p-[50px] flex 
         flex-col gap-5 h-[500px] overflow-y-scroll">

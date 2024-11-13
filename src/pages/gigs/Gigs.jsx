@@ -26,7 +26,7 @@ const Gigs = () => {
          flex-col gap-[15px]"
       >
         <span className="breadcrumbs font-light text-[13px] text-[#555] text-uppercase ">
-          Fiverr > Graphics & Design >
+          Fiverr {'>'} Graphics & Design {'>'}
         </span>
         <h1 className="font-bold text-2xl">AI Artists</h1>
         <p className="text-[#999] font-light">
