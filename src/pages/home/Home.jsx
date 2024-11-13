@@ -5,8 +5,8 @@ import TrustedBy from '../../components/trustedBy/trustedBy';
 import Slide from '../../components/slides/Slides';
 import { cards, projects } from '../../data.js';
 import CatCard from '../../components/cateogryCard/categoryCard';
-import Features from '../../components/features/Features.jsx';
-import ProjectCard from '../../components/projectCard/ProjectCard.jsx';
+import Features from '../../components/features/Features';
+import ProjectCard from '../../components/projectCard/ProjectCard';
 
 
 const Home = () => {
