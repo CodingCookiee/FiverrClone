@@ -8,7 +8,6 @@ import CatCard from '../../components/cateogryCard/categoryCard';
 import Features from '../../components/features/Features';
 import ProjectCard from '../../components/projectCard/ProjectCard';
 
-
 const Home = () => {
     return (
         <div className="home">
