@@ -28,7 +28,7 @@ function Messages() {
             
           </tr>
           <tr className="active h-[100px] bg-[#1dbf730f] ">
-          <td className="p-2.5 font-semibold" >Charley Sharp</td>
+          <td className="p-2.5 font-bold" >Charley Sharp</td>
             <td className="p-2.5">
               <Link to="/message/123" className="link">
                 {message.substring(0, 100)}...
@@ -41,7 +41,7 @@ function Messages() {
             </td>
           </tr>
           <tr className="active h-[100px]  bg-[#1dbf730f] ">
-            <td className="p-2.5 font-semibold">John Doe</td>
+            <td className="p-2.5 font-bold">John Doe</td>
             <td className="p-2.5 ">
               <Link to="/message/123" className="link">
                 {message.substring(0, 100)}...
@@ -54,7 +54,7 @@ function Messages() {
             </td>
           </tr>
           <tr className="h-[100px] ">
-          <td className="p-2.5 font-semibold">Elinor Good</td>
+          <td className="p-2.5 font-bold">Elinor Good</td>
             <td className="p-2.5 ">
               <Link to="/message/123" className="link">
                 {message.substring(0, 100)}...
@@ -63,7 +63,7 @@ function Messages() {
             <td className="p-2.5 ">1 day ago</td>
           </tr>
           <tr className="h-[100px]">
-            <td className="p-2.5 font-semibold">Garner David </td>
+            <td className="p-2.5 font-bold">Garner David </td>
             <td className="p-2.5 ">
               <Link to="/message/123" className="link">
                 {message.substring(0, 100)}...
@@ -72,7 +72,7 @@ function Messages() {
             <td className="p-2.5 ">2 days ago</td>
           </tr>
           <tr className="h-[100px]">
-          <td className="p-2.5 font-semibold">Troy Oliver</td>
+          <td className="p-2.5 font-bold">Troy Oliver</td>
             <td className="p-2.5 ">{message.substring(0, 100)}</td>
             <td className="p-2.5 ">1 week ago</td>
           </tr>
