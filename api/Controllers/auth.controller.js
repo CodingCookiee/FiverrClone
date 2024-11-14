@@ -32,12 +32,14 @@ export const login = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
 
+    // Check for all required fields
     if (!password || (!email && !username)) {
       return res
         .status(400)
         .json({ message: "Please provide either email or username with password" });
     }
 
+    // Login using email or username
     let user;
     if (email) {
       user = await User.findOne({ email });
@@ -68,7 +70,7 @@ export const login = async (req, res, next) => {
     const { password: userPassword, ...rest } = user._doc;
 
     res
-      .cookie("token", token, { httpOnly: true })
+      .cookie("accessToken", token, { httpOnly: true })
       .status(200)
       .json({ message: "Logged in successfully", ...rest });
       
@@ -82,8 +84,13 @@ export const login = async (req, res, next) => {
 // Logout a user
 export const logout = (req, res) => {
   try {
-    res.clearCookie("token");
-    res.json({ message: "Logged out successfully" });
+    res
+    .clearCookie("accessToken", {
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .json("User has been logged out.");
   } catch (err) {
     console.error("Logout error:", err);
     res.status(500).json({ message: "Internal server error" });
