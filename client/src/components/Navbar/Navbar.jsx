@@ -1,3 +1,4 @@
+// Navbar.js
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./Navbar.css";
@@ -7,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isSeller, setIsSeller] = useState(false);
+  const [hideSellerButton, setHideSellerButton] = useState(false);
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -36,18 +37,18 @@ const Navbar = () => {
     }
   };
 
-  // when the become a seller button is clicked, the isSeller state is set to true
   const handleSeller = async () => {
     try {
-      const res = await newRequest.post("/auth/becomeSeller");
-      setIsSeller(true);
+      setHideSellerButton(true); 
+      await newRequest.post("/users/:id", {
+        isSeller: true,
+      });
+      navigate("/login");
     } catch (err) {
       console.log(err);
-      setIsSeller(false);
-      };
+      setHideSellerButton(false); 
+    }
   };
-
-
 
   return (
     <div
@@ -60,7 +61,7 @@ const Navbar = () => {
       <div className="container w-[1400px] flex justify-between p-5 pl-0 pr-0">
         <div className="logo font-bold text-2xl ">
           <Link to="/">
-            <span className="text ">fiverr</span>
+            <span className="text">fiverr</span>
           </Link>
           <span className="dot text-[#1dbf73]">.</span>
         </div>
@@ -69,11 +70,12 @@ const Navbar = () => {
           <span>Explore</span>
           <span>English</span>
           {/* Become a Seller */}
-          {!currentUser?.isSeller && <button onClick={handleSeller}>Become a Seller</button>}
+          {!currentUser?.isSeller && !hideSellerButton && (
+            <button onClick={handleSeller}>Become a Seller</button>
+          )}
           {currentUser ? (
             <div
-              className="user flex items-center 
-            gap-2 cursor-pointer relative"
+              className="user flex items-center gap-2 cursor-pointer relative"
               onClick={() => setOpen(!open)}
             >
               <img
@@ -84,43 +86,27 @@ const Navbar = () => {
               <span className="text">{currentUser?.username}</span>
               {open && (
                 <div
-                  className="options absolute top-12 right-0 bg-white p-5 
-                rounded-lg flex flex-col gap-2 border border-solid
-                border-gray-300 text-slate-500 w-[250px]"
+                  className="options absolute top-12 right-0 bg-white p-5 rounded-lg flex flex-col gap-2 border border-solid border-gray-300 text-slate-500 w-[250px]"
                 >
                   {currentUser?.isSeller && (
                     <div className="seller flex flex-col gap-2">
-                      <Link to="/mygigs" className="text">
-                        Gigs
-                      </Link>
-                      <Link to="/add" className="text">
-                        Add New Gig
-                      </Link>
+                      <Link to="/mygigs" className="text">Gigs</Link>
+                      <Link to="/add" className="text">Add New Gig</Link>
                     </div>
                   )}
-                  <Link to="/orders" className="text">
-                    Orders
-                  </Link>
-                  <Link to="/messages" className="text">
-                    Messages
-                  </Link>
-                  <Link className="text" onClick={handleLogout}>
-                    Log Out
-                  </Link>
+                  <Link to="/orders" className="text">Orders</Link>
+                  <Link to="/messages" className="text">Messages</Link>
+                  <Link className="text" onClick={handleLogout}>Log Out</Link>
                 </div>
               )}
             </div>
           ) : (
             <>
-              <Link to="/login" className="link">
-                Sign in
-              </Link>
+              <Link to="/login" className="link">Sign in</Link>
               <Link className="link" to="/register">
                 {!currentUser && (
                   <button
-                    className="btn text-white p-[10px] pl-5 pr-5 
-            rounded-sm border border-solid border-white bg-transparent 
-            cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
+                    className="btn text-white p-[10px] pl-5 pr-5 rounded-sm border border-solid border-white bg-transparent cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
                   >
                     Join
                   </button>
@@ -132,42 +118,22 @@ const Navbar = () => {
       </div>
       {(active || pathname !== "/") && (
         <>
-          <hr className="w-full h-0  border-[#ebebeb] border-solid" />
-          <div
-            className="menu flex justify-between w-[1400px] p-[10px]
-         pl-0 pr-0 font-light text-[Montserrat] text-slate-400"
-          >
-            <Link to="/" className="link menuLink">
-              Graphics & Design
-            </Link>
-            <Link to="/" className="link">
-              Videos & Animation
-            </Link>
-            <Link to="/" className="link">
-              Writing and Translation
-            </Link>
-            <Link to="/" className="link">
-              AI Services
-            </Link>
-            <Link to="/" className="link">
-              Digital Marketing
-            </Link>
-            <Link to="/" className="link">
-              Music & Audio
-            </Link>
-            <Link to="/" className="link">
-              Programming & Tech
-            </Link>
-            <Link to="/" className="link">
-              Business & Management
-            </Link>
-            <Link to="/" className="link">
-              Finance
-            </Link>
+          <hr className="w-full h-0 border-[#ebebeb] border-solid" />
+          <div className="menu flex justify-between w-[1400px] p-[10px] pl-0 pr-0 font-light text-[Montserrat] text-slate-400">
+            <Link to="/" className="link menuLink">Graphics & Design</Link>
+            <Link to="/" className="link">Videos & Animation</Link>
+            <Link to="/" className="link">Writing and Translation</Link>
+            <Link to="/" className="link">AI Services</Link>
+            <Link to="/" className="link">Digital Marketing</Link>
+            <Link to="/" className="link">Music & Audio</Link>
+            <Link to="/" className="link">Programming & Tech</Link>
+            <Link to="/" className="link">Business & Management</Link>
+            <Link to="/" className="link">Finance</Link>
           </div>
         </>
       )}
     </div>
   );
 };
+
 export default Navbar;
