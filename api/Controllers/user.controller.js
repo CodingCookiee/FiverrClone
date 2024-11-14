@@ -1,31 +1,24 @@
-import User from "../models/user.model.js"; 
-import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
 
-// delete a user
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
-    const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json("Not Authenticated!");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
 
-    jwt.verify(token, process.env.JWT_KEY, async (err, payload) => {
-      if (err) return res.status(401).json("Token is not valid!");
-      try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json("User not found!");
+    if (!req.userId) {
+      return res.status(403).json({ message: "User ID is not set!" });
+    }
 
-        if (payload.userId === user._id.toString()) {
-          await User.findByIdAndDelete(req.params.id);
-          return res.status(200).json("User has been deleted!");
-        }
-        return res.status(403).json("You can delete only your account!");
-      } catch (error) {
-        return res.status(500).json({ message: "Error processing request" });
-      }
-    });
+    if (req.userId.toString() !== user._id.toString()) {
+      return res.status(403).json({ message: "You can delete only your account!" });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "User deleted successfully!" });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
-
