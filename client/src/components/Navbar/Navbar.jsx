@@ -1,10 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./Navbar.css";
+import newRequest from "../../utils/newRequest";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const {pathname} = useLocation();
 
@@ -20,12 +23,20 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const currentUser = {
-    id: 1,
-    username: "John Doe",
-    isSeller: true,
+  const handleLogout = async () => {
+    try {
+      await newRequest.post("/auth/logout");
+      localStorage.setItem("currentUser", null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+
 
   return (
     <div
@@ -46,25 +57,15 @@ const Navbar = () => {
           <span>Fiverr Business</span>
           <span>Explore</span>
           <span>English</span>
-          <Link to="/login" className="link">Sign in</Link>
           {!currentUser?.isSeller && <span>Become a Seller</span>}
-          {!currentUser && (
-            <button
-              className="btn text-white p-[10px] pl-5 pr-5 
-            rounded-sm border border-solid border-white bg-transparent 
-            cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
-            >
-              Join
-            </button>
-          )}
-          {currentUser && (
+          {currentUser ? (
             <div
               className="user flex items-center 
             gap-2 cursor-pointer relative"
               onClick={() => setOpen(!open)}
             >
               <img
-                src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={currentUser?.img || "/avatar.png"}
                 alt=""
                 className="w-8 h-8 rounded-full object-cover"
               />
@@ -91,10 +92,25 @@ const Navbar = () => {
                   <Link to="/messages" className="text">
                     Messages
                   </Link>
-                  <Link className="text">Log Out</Link>
+                  <Link className="text" onClick={handleLogout}>Log Out</Link>
                 </div>
               )}
             </div>
+          ) : (
+            <>
+              <Link to="/login" className="link">Sign in</Link>
+              <Link className="link" to="/register">
+              {!currentUser && (
+            <button
+              className="btn text-white p-[10px] pl-5 pr-5 
+            rounded-sm border border-solid border-white bg-transparent 
+            cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
+            >
+              Join
+            </button>
+          )}
+              </Link>
+            </>
           )}
         </div>
       </div>
@@ -139,5 +155,4 @@ const Navbar = () => {
       )}
     </div>
   );
-};
-export default Navbar;
+};export default Navbar;
