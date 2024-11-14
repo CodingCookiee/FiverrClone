@@ -11,18 +11,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Determine if identifier is email or username 
+    const loginData = identifier.includes("@") || identifier.includes("gmail") || identifier.includes(".com") || identifier.includes(".net") || identifier.includes(".org")
+      ? { email: identifier, password }
+      : { username: identifier, password };
+
     try {
-      const response = await newRequest.post("/auth/login", {
-        identifier, // Unified field for username or email
-        password,
-      });
+      const response = await newRequest.post("/auth/login", loginData);
       localStorage.setItem("currentUser", JSON.stringify(response.data));
       navigate("/");
     } catch (err) {
       setError(err.response.data);
+      console.log(err.response.data);
     }
   };
-
   return (
     <div className="login flex items-center justify-center">
       <div className="login">
