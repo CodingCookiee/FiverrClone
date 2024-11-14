@@ -23,7 +23,6 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       setError(err.response.data);
-      console.log(err.response.data);
     }
   };
   return (
@@ -66,7 +65,7 @@ const Login = () => {
           >
             Login
           </button>
-          {error && <span className="text-red-500">{error.message}</span>}
+          {error && <span className="text-red-500">{error}</span>}
         </form>
       </div>
     </div>
