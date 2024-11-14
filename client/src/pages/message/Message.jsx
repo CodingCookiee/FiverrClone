@@ -210,7 +210,7 @@ const Message = () => {
         <div className="write flex items-center justify-between">
           <textarea type="text" placeholder="write your message" className="w-[80%] h-[100px] min-h-[100px] p-2.5
           border border-solid border-[lightgrey] rounded-[10px] " />
-          <button className="bg-[#1dbf73] hover:bg-[#40e076] p-5 text-white rounded-[10px] 
+          <button className="bg-[#1dbf73] hover:bg-[#10b981] p-5 text-white rounded-[10px] 
           font-medium border-none cursor-pointer w-[100px]">Send</button>
         </div>
       </div>

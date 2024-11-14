@@ -36,7 +36,7 @@ function Messages() {
             </td>
             <td className="p-2.5 ">1 hour ago</td>
             <td className="p-2.5">
-              <button className="bg-[#1dbf73] hover:bg-[#40e076] text-white font-medium
+              <button className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
                border-none p-[10px] cursor-pointer">Mark as Read</button>
             </td>
           </tr>
@@ -49,7 +49,7 @@ function Messages() {
             </td>
             <td className="p-2.5 ">2 hours ago</td>
             <td className="p-2.5 ">
-              <button className="bg-[#1dbf73] hover:bg-[#40e076] text-white font-medium
+              <button className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
                border-none p-[10px] cursor-pointer">Mark as Read</button>
             </td>
           </tr>

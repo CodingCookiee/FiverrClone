@@ -49,7 +49,7 @@ const Gigs = () => {
             />
             <button
               onClick={apply}
-              className="p-[5px] pl-2.5 pr-2.5 bg-[#1dbf73] hover:bg-[#40e076] text-white border-none font-medium rounded-md cursor-pointer "
+              className="p-[5px] pl-2.5 pr-2.5 bg-[#1dbf73] hover:bg-[#10b981] text-white border-none font-medium rounded-md cursor-pointer "
             >
               Apply
             </button>

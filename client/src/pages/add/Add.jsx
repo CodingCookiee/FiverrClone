@@ -56,7 +56,7 @@ const Add = () => {
             ></textarea>
             <button
               className="border-none p-5 text-white font-medium
-             bg-[#1dbf73] text-[18px] cursor-pointer rounded-md hover:bg-[#40e076]"
+             bg-[#1dbf73] text-[18px] cursor-pointer rounded-md hover:bg-[#10b981]"
             >
               Create
             </button>

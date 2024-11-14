@@ -16,7 +16,7 @@ function MyGigs() {
           <h1 className="font-bold text-3xl">{currentUser.isSeller ? "Gigs" : "Orders"}</h1>
           {currentUser.isSeller && (
             <Link to="/add">
-              <button className="bg-[#1dbf73] hover:bg-[#40e076] text-white font-medium
+              <button className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
                border-none p-[10px] cursor-pointer">
                 Add New Gig
               </button>
