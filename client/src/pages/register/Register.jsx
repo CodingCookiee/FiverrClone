@@ -22,9 +22,16 @@ const Register = () => {
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const handleSeller = (e) => {
     setUser((prev) => ({ ...prev, isSeller: e.target.checked }));
   };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = await upload(file);
@@ -40,7 +47,7 @@ const Register = () => {
   };
 
   return (
-    <div className="register flex items-center justify-center ">
+    <div className="register flex items-center justify-center">
       <form
         className="w-[960px] flex gap-[120px] p-[100px] pl-0 pr-0"
         onSubmit={handleSubmit}
@@ -95,9 +102,9 @@ const Register = () => {
             shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
             type="file"
             id="file"
-            onChange={(e) => setFile(e.target.files[0])}
-            value={user.img}
+            onChange={handleFileChange}
           />
+          
           <label htmlFor="country" className="color-[gray] text-[18px]">
             Country<span className="text-red-500">*</span>
           </label>
@@ -107,7 +114,7 @@ const Register = () => {
             name="country"
             type="text"
             id="country"
-            placeholder="Usa"
+            placeholder="USA"
             onChange={handleChange}
             value={user.country}
           />

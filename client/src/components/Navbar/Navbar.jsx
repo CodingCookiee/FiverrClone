@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -35,6 +36,19 @@ const Navbar = () => {
     }
   };
 
+  // when the become a seller button is clicked, the isSeller state is set to true
+  const handleSeller = async () => {
+    try {
+      const res = await newRequest.post("/auth/becomeSeller");
+      setIsSeller(true);
+    } catch (err) {
+      console.log(err);
+      setIsSeller(false);
+      };
+  };
+
+
+
   return (
     <div
       className={
@@ -54,7 +68,8 @@ const Navbar = () => {
           <span>Fiverr Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {/* Become a Seller */}
+          {!currentUser?.isSeller && <button onClick={handleSeller}>Become a Seller</button>}
           {currentUser ? (
             <div
               className="user flex items-center 
