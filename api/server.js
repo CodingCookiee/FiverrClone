@@ -11,6 +11,8 @@ import reviewRoute from './routes/review.route.js';
 import conversationRoute from './routes/conversation.route.js';
 import authRoute from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
+import errorHandler from './middleware/errorHandler.js';
+
 
 dotenv.config();
 
@@ -24,7 +26,7 @@ app.use(
   })
 );
 
-app.use(express.json()); // Middleware to parse JSON data
+app.use(express.json()); 
 app.use(cookieParser());
 
 // Routes
@@ -35,6 +37,9 @@ app.use('/api/orders', orderRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/reviews', reviewRoute);
 app.use('/api/conversations', conversationRoute);
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.listen(port, async () => {
   await connectToDatabase();

@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import createError from "../utils/createError.js";
 
 // Register a user
 export const register = async (req, res, next) => {
@@ -9,7 +10,7 @@ export const register = async (req, res, next) => {
 
     // Check for all required fields
     if (!email || !password || !username || !country) {
-      return res.status(400).json({ message: "All fields are required" });
+      return next(createError(400, "Please provide all required fields"))
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -22,7 +23,6 @@ export const register = async (req, res, next) => {
     res.status(201).json({ message: "New User Created Successfully" });
   } catch (err) {
     console.error("Registration error:", err);
-    res.status(500).json({ message: "Internal server error" });
     next(err);
   }
 };
@@ -34,9 +34,7 @@ export const login = async (req, res, next) => {
 
     // Check for all required fields
     if (!password || (!email && !username)) {
-      return res
-        .status(400)
-        .json({ message: "Please provide either email or username with password" });
+      return next(createError(400, "Please provide either email or username with password"))
     }
 
     // Login using email or username
@@ -44,22 +42,18 @@ export const login = async (req, res, next) => {
     if (email) {
       user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ message: "Email or Password is Wrong" });
+        return next(createError(400, "Email or Password is Wrong"))
       }
     } else {
       user = await User.findOne({ username });
       if (!user) {
-        return res.status(400).json({ message: "Username or Password is Wrong" });
+        return next(createError(400, "Username or Password is Wrong"))
       }
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(400).json({ 
-        message: email 
-          ? "Email or Password is Wrong" 
-          : "Username or Password is Wrong" 
-      });
+      return next(createError(400, "Invalid Password"))
     }
 
     const token = jwt.sign(
@@ -76,13 +70,12 @@ export const login = async (req, res, next) => {
       
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: "Internal server error" });
     next(err);
   }
 };
 
 // Logout a user
-export const logout = (req, res) => {
+export const logout = (req, res, next) => {
   try {
     res
     .clearCookie("accessToken", {
@@ -93,6 +86,6 @@ export const logout = (req, res) => {
     .json("User has been logged out.");
   } catch (err) {
     console.error("Logout error:", err);
-    res.status(500).json({ message: "Internal server error" });
+    next(err);
   }
 };
