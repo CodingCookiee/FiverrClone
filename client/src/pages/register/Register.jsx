@@ -96,6 +96,7 @@ const Register = () => {
             type="file"
             id="file"
             onChange={(e) => setFile(e.target.files[0])}
+            value={user.img}
           />
           <label htmlFor="country" className="color-[gray] text-[18px]">
             Country<span className="text-red-500">*</span>
