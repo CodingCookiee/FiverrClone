@@ -9,8 +9,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const {pathname} = useLocation();
-
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +22,7 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   const handleLogout = async () => {
@@ -35,8 +34,6 @@ const Navbar = () => {
       console.log(err);
     }
   };
-
-
 
   return (
     <div
@@ -92,23 +89,27 @@ const Navbar = () => {
                   <Link to="/messages" className="text">
                     Messages
                   </Link>
-                  <Link className="text" onClick={handleLogout}>Log Out</Link>
+                  <Link className="text" onClick={handleLogout}>
+                    Log Out
+                  </Link>
                 </div>
               )}
             </div>
           ) : (
             <>
-              <Link to="/login" className="link">Sign in</Link>
+              <Link to="/login" className="link">
+                Sign in
+              </Link>
               <Link className="link" to="/register">
-              {!currentUser && (
-            <button
-              className="btn text-white p-[10px] pl-5 pr-5 
+                {!currentUser && (
+                  <button
+                    className="btn text-white p-[10px] pl-5 pr-5 
             rounded-sm border border-solid border-white bg-transparent 
             cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
-            >
-              Join
-            </button>
-          )}
+                  >
+                    Join
+                  </button>
+                )}
               </Link>
             </>
           )}
@@ -121,38 +122,37 @@ const Navbar = () => {
             className="menu flex justify-between w-[1400px] p-[10px]
          pl-0 pr-0 font-light text-[Montserrat] text-slate-400"
           >
-          <Link to='/' className="link menuLink">
-            Graphics & Design
-          </Link>
-          <Link to='/' className="link">
-            Videos & Animation
-          </Link>
-          <Link to='/' className="link">
-            Writing and Translation
-          </Link>
-          <Link to='/' className="link">
-            AI Services
-          </Link>
-          <Link to='/' className="link">
-            Digital Marketing
-          </Link>
-          <Link to='/' className="link">
-            Music & Audio
-          </Link>
-          <Link to='/' className="link">
-            Programming & Tech
-          </Link>
-          <Link to='/' className="link">
-            Business & Management
-          </Link>
-          <Link to='/' className="link">
-            Finance
-          </Link>
-          
-          
+            <Link to="/" className="link menuLink">
+              Graphics & Design
+            </Link>
+            <Link to="/" className="link">
+              Videos & Animation
+            </Link>
+            <Link to="/" className="link">
+              Writing and Translation
+            </Link>
+            <Link to="/" className="link">
+              AI Services
+            </Link>
+            <Link to="/" className="link">
+              Digital Marketing
+            </Link>
+            <Link to="/" className="link">
+              Music & Audio
+            </Link>
+            <Link to="/" className="link">
+              Programming & Tech
+            </Link>
+            <Link to="/" className="link">
+              Business & Management
+            </Link>
+            <Link to="/" className="link">
+              Finance
+            </Link>
           </div>
         </>
       )}
     </div>
   );
-};export default Navbar;
+};
+export default Navbar;
