@@ -31,7 +31,7 @@ const Login = () => {
         <form 
           onSubmit={handleSubmit}
           className="w-[300px] h-full p-[100px] pl-0 pr-0 flex flex-col gap-5 ">
-          <h1 className="text-[gray] mb-5 font-light text-2xl">Sign in</h1>
+          <h1 className="text-[gray] mb-5 font-light text-3xl">Sign in</h1>
           
           <label htmlFor="identifier" className="text-[gray] text-[18-px]">
             Username or Email
