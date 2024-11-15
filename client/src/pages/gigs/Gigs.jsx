@@ -25,9 +25,7 @@ const Gigs = () => {
         .then((res) => res.data);
     },
   });
-
-  console.log(data);
-
+  
   const reSort = (type) => {
     setSort(type);
     setOpen(false);
