@@ -18,14 +18,19 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const Layout = () => {
     return (
       <>
-        <Navbar />
-        <Outlet />
-        <Footer />
+        <QueryClientProvider client={queryClient}>
+          <Navbar />
+          <Outlet />
+          <Footer />
+        </QueryClientProvider>
       </>
     );
   };
@@ -33,55 +38,54 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element:<Layout />,
+      element: <Layout />,
       children: [
         {
           path: "/",
-          element: <Home/>
+          element: <Home />,
         },
         {
           path: "/gigs",
-          element: <Gigs/>
+          element: <Gigs />,
         },
         {
           path: "/gig/:id",
-          element: <Gig/>
+          element: <Gig />,
         },
         {
           path: "/orders",
-          element: <Orders/>
+          element: <Orders />,
         },
         {
           path: "/mygigs",
-          element: <MyGigs/>
+          element: <MyGigs />,
         },
         {
           path: "/add",
-          element: <Add/>
+          element: <Add />,
         },
         {
           path: "/messages",
-          element: <Messages/>
+          element: <Messages />,
         },
         {
           path: "/message/:id",
-          element: <Message/>
+          element: <Message />,
         },
         {
           path: "/login",
-          element: <Login/>
+          element: <Login />,
         },
         {
           path: "/register",
-          element: <Register/>
-        }
+          element: <Register />,
+        },
       ],
-  
     },
-    ]);
+  ]);
   return (
-    <div >
-    <RouterProvider router={router} />
+    <div>
+      <RouterProvider router={router} />
     </div>
   );
 };

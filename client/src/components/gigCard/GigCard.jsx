@@ -6,16 +6,16 @@ const GigCard = ({ item }) => {
     return (
         <Link to='/gig/123' className='link'>
             <div className='gig-card w-[324px] h-[440px] border border-solid border-[rgb(228, 228, 228)] mb-[40px]'>
-                <img src={item.img} alt='' className='w-full h-[50%] object-cover'/>
+                <img src={item.images} alt='' className='w-full h-[50%] object-cover'/>
                 <div className='info p-2.5 pl-5 pr-5 flex flex-col gap-5'>
                     <div className='user flex items-center gap-2.5'>
-                        <img src={item.pp} alt='' className='w-[26px] h-[26px] rounded-[50%] object-cover'/>
+                        <img src={item.cover} alt='' className='w-[26px] h-[26px] rounded-[50%] object-cover'/>
                         <span>{item.username}</span>
                     </div>
                     <p className='text-[#111]'>{item.desc}</p>
                     <div className='star flex items-center gap-[5px]'>
                         <img src='/star.png' alt='' className='w-[14px] h-[14px]]'/>
-                        <span className='text-sm font-bold text-[#ffc108]'>{item.star}</span>
+                        <span className='text-sm font-bold text-[#ffc108]'>{item.totalStars}</span>
                     </div>
                 </div>
                 <hr className='h-0 border-[0.5px] border-solid border-[rgb(228, 228, 228)]'/>

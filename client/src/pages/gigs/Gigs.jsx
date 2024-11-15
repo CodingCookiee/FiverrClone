@@ -1,22 +1,44 @@
 import React from "react";
-import { gigs } from "../../data.js";
 import GigCard from "../../components/gigCard/GigCard.jsx";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import newRequest from "../../utils/newRequest.js";
+import { useLocation } from "react-router-dom";
 
 const Gigs = () => {
   const [sort, setSort] = useState("sales");
   const [open, setOpen] = useState(false);
   const minRef = useRef();
   const maxRef = useRef();
+  const { search } = useLocation();
+
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["gigs", search, sort],
+    queryFn: () => {
+      // Fix: Use ? for first parameter, then & for subsequent ones
+      return newRequest
+        .get(
+          `/gigs${search ? search : "?"}${search ? "&" : ""}min=${
+            minRef.current.value || 0
+          }&max=${maxRef.current.value || 1000000000}&sort=${sort}`
+        )
+        .then((res) => res.data);
+    },
+  });
+
+  console.log(data);
 
   const reSort = (type) => {
     setSort(type);
     setOpen(false);
   };
 
+  useEffect(() => {
+    refetch();
+  }, [sort]);
+
   const apply = () => {
-    console.log(minRef.current.value);
-    console.log(maxRef.current.value);
+    refetch();
   };
 
   return (
@@ -26,7 +48,7 @@ const Gigs = () => {
          flex-col gap-[15px]"
       >
         <span className="breadcrumbs font-light text-[13px] text-[#555] text-uppercase ">
-          Fiverr {'>'} Graphics & Design {'>'}
+          Fiverr {">"} Graphics & Design {">"}
         </span>
         <h1 className="font-bold text-2xl">AI Artists</h1>
         <p className="text-[#999] font-light">
@@ -57,7 +79,11 @@ const Gigs = () => {
           <div className="right relative flex items-center gap-2.5">
             <span className="sortBy text-[#555] font-light">Sort by</span>
             <span className="sortType font-medium ">
-              {sort === "sales" ? "Best Selling" : "Newest"}
+              {sort === "sales"
+                ? "Best Selling"
+                : sort === "createdAt"
+                ? "Newest"
+                : "Popular"}
             </span>
             <img
               src="/down.png"
@@ -75,15 +101,35 @@ const Gigs = () => {
                 ) : (
                   <span onClick={() => reSort("sales")}>Best Selling</span>
                 )}
-                <span onClick={() => reSort("sales")}>Popular</span>
+                <span onClick={() => reSort("popular")}>Popular</span>
               </div>
             )}
           </div>
         </div>
         <div className="cards flex justify-between flex-wrap ">
-          {gigs.map((gig) => (
-            <GigCard item={gig} key={gig.id} />
-          ))}
+          {isLoading ? (
+            <div
+              className={`h-full w-full max-w-xl mt-5 border-gray-300 shadow rounded-md p-4 mx-auto`}
+            >
+              <div className="animate-pulse flex space-x-4">
+                <div className={`rounded-full  `}></div>
+                <div className="flex-1 space-y-4">
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} className="space-y-3">
+                      <div
+                        className={`h-2 mt-10 mb-10 bg-slate-300 rounded w-3/4`}
+                      ></div>
+                      <div className={`h-2 bg-slate-300 rounded w-1/2`}></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : error ? (
+            "Something went wrong!"
+          ) : (
+            data.map((gig) => <GigCard key={gig._id} item={gig} />)
+          )}
         </div>
       </div>
     </div>
