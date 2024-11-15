@@ -50,12 +50,17 @@ export const getGigs = async (req, res, next) => {
   const q = req.query;
   const filters = {
     ...(q.userId && { userId: q.userId }),
-    ...(q.cat && { cat: q.cat }),
-    ...((q.min || q.max) && { price: {
-      ...(q.min && { $gt: q.min }),
-      ...(q.max && { $lt: q.max })
-    }}),
-    ...(q.search && { title: { $regex: q.search, $options: 'i' } }),
+    ...(q.cat && { cat:{ $regex: q.cat, $options: "i", }}),
+    ...((q.min || q.max) && {
+      price: {
+        ...(q.min && { $gt: q.min }),
+        ...(q.max && { $lt: q.max }),
+      },
+    }),
+    // Prioritize 'title' over 'search' if both are provided
+...(q.title ? { title: { $regex: q.title, $options: "i" } } 
+  : (q.search && { title: { $regex: q.search, $options: "i" } })),
+
   };
   try {
     const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
