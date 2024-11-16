@@ -5,7 +5,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useQuery } from "react-query";
 import newRequest from "../../utils/newRequest";
 import { useParams } from "react-router-dom";
-import Reviews from "../../components/review/Reviews";
+import Reviews from "../../components/reviews/Reviews";
 
 
 // Custom arrow components
