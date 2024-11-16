@@ -15,9 +15,9 @@ const GigCard = ({ item }) => {
 
     return (
         <Link to={`/gig/${item._id}`} className='link'>
-            <div className='gig-card w-[324px] h-[450px]  max-h-max border border-solid border-[rgb(228, 228, 228)] mb-[40px]'>
+            <div className='gig-card w-[324px] h-[450px] border border-solid border-[rgb(228, 228, 228)] mb-[40px]'>
                 <img src={item.cover} alt='' className='w-full h-[50%] object-cover'/>
-                <div className='info p-2.5 pl-5 pr-5 flex flex-col gap-5'>
+                <div className='info p-2.5 pl-5 pr-5 flex flex-col gap-5 '>
                 {
                     isLoading ? (
                         <div className="user flex items-center gap-2.5">Loading...</div>
@@ -34,7 +34,7 @@ const GigCard = ({ item }) => {
                         </div>
                     )
                 }
-                    <p className='text-[#111]'>{item.desc}</p>
+                    <p className='text-[#111] text-md font-light overflow-hidden line-clamp-[3]'>{item.desc}</p>
                     <div className='star flex items-center gap-[5px]'>
                         <img src='/star.png' alt='' className='w-[14px] h-[14px]]'/>
                         <span className='text-sm font-bold text-[#ffc108]'>  {!isNaN(item.totalStars / item.starNumber) &&

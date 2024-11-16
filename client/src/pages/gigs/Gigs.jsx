@@ -12,19 +12,40 @@ const Gigs = () => {
   const maxRef = useRef();
   const { search } = useLocation();
 
-  const { isLoading, error, data, refetch } = useQuery({
-    queryKey: ["gigs", search, sort],
-    queryFn: () => {
-      // Fix: Use ? for first parameter, then & for subsequent ones
-      return newRequest
-        .get(
-          `/gigs${search ? search : "?"}${search ? "&" : ""}min=${
-            minRef.current.value || 0
-          }&max=${maxRef.current.value || 1000000000}&sort=${sort}`
-        )
-        .then((res) => res.data);
-    },
-  });
+ // Modify the queryFn in useQuery to handle the popular sort
+const { isLoading, error, data, refetch } = useQuery({
+  queryKey: ["gigs", search, sort],
+  queryFn: () => {
+    return newRequest
+      .get(
+        `/gigs${search ? search : "?"}${search ? "&" : ""}min=${
+          minRef.current.value || 0
+        }&max=${maxRef.current.value || 1000000000}&sort=${sort}`
+      )
+      .then((res) => {
+        let gigs = res.data;
+        if (sort === "popular") {
+          // Sort by rating, filtering for ratings > 4
+          return gigs.sort((a, b) => {
+            const ratingA = Math.round(a.totalStars / a.starNumber) || 0;
+            const ratingB = Math.round(b.totalStars / b.starNumber) || 0;
+            
+            // First prioritize gigs with rating > 4
+            const isHighRatedA = ratingA > 4;
+            const isHighRatedB = ratingB > 4;
+            
+            if (isHighRatedA && !isHighRatedB) return -1;
+            if (!isHighRatedA && isHighRatedB) return 1;
+            
+            // Then sort by actual rating value
+            return ratingB - ratingA;
+          });
+        }
+        return gigs;
+      });
+  },
+});
+
   
   const reSort = (type) => {
     setSort(type);
