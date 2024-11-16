@@ -13,10 +13,8 @@ const Review = ({ review }) => {
   });
 
   return (
-    <div className="review mt-[50px] pb-5">
-    <h2 className="font-medium text-xl text-[gray] mb-5">
-                  Reviews
-                </h2>
+    
+    <div className="review pb-5">
       <div className="item flex flex-col gap-5 mb-5 ml-0 mr-0">
         {isLoading ? (
           <div className="user flex items-center gap-2.5">Loading...</div>
@@ -63,7 +61,9 @@ const Review = ({ review }) => {
           <span>No</span>
         </div>
       </div>
+      <hr className="h-0 m-[50px] ml-0 mr-0 border-[0.5px] border-solid border-[lightgrey]" />
     </div>
+    
   );
 };
 
