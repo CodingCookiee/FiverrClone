@@ -1,20 +1,41 @@
 import Review from "../review/Review.jsx";
 import { Link } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import newRequest from "../../utils/newRequest";
 
 const Reviews = ({ gigId }) => {
+  const queryClient = useQueryClient()
+  const [errorClass, setErrorClass] = useState(null);
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["reviews"],
     queryFn: () =>
-      newRequest.get(`/reviews/${gigId}`).then((res) => {
-        return res.data;
-      }),
+      newRequest.get(`/reviews/${gigId}`)
+        .then((res) => {
+          return res.data;
+        })
   });
+
+  const mutation = useMutation({
+    mutationKey: ["createReview"],
+    mutationFn: (review) =>{
+      return newRequest.post(`/reviews`, review)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+    }
+  });
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const desc = e.target[0].value;
+    const star = e.target[1].value;
+    mutation.mutate({ gigId, desc, star });
+    setErrorClass(mutation.error?.response?.data);
   };
+  console.log(mutation.error?.response?.data);
 
   return (
     <>
@@ -69,6 +90,7 @@ const Reviews = ({ gigId }) => {
           <button className="w-[100px] bg-[#1dbf73] p-2.5 text-white font-medium border-none text-[18px] cursor-pointer">
             Send
           </button>
+          {errorClass && <span className="text-red-500">{errorClass}</span>}
         </form>
       </div>
     </>

@@ -5,7 +5,7 @@ import Gig from "../models/gig.model.js";
 //  create  a review
 export const createReview = async (req, res, next) => {
   if (req.isSeller)
-    return next(createError(403, "Sellers can't review a gig"));
+    return next(createError(403, "Sellers cannot review a Gig"));
 
   const newReview = new Review({
     userId: req.userId,

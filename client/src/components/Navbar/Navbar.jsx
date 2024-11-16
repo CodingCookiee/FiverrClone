@@ -6,12 +6,15 @@ import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [active, setActive] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [hideSellerButton, setHideSellerButton] = useState(false);
-  const navigate = useNavigate();
+const [active, setActive] = useState(false);
+const [open, setOpen] = useState(false);
+const [hideSellerButton, setHideSellerButton] = useState(false);
+const navigate = useNavigate();
+const { pathname } = useLocation();
 
-  const { pathname } = useLocation();
+// Update the joinBtnClass to use the active state instead of window.scrollY
+const joinBtnClass = ( pathname!=='/' || active === true)  ?  'text-black border-black' : 'text-white border-white'
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,7 +109,9 @@ const Navbar = () => {
               <Link className="link" to="/register">
                 {!currentUser && (
                   <button
-                    className="btn text-white p-[10px] pl-5 pr-5 rounded-sm border border-solid border-white bg-transparent cursor-pointer hover:bg-[#1dbf73] hover:border-[#1dbf73]"
+                    className={`btn ${joinBtnClass} p-[10px] pl-5 pr-5 rounded-sm border 
+                    border-solid  bg-transparent cursor-pointer
+                     hover:bg-[#1dbf73] hover:border-[#1dbf73]`}
                   >
                     Join
                   </button>
