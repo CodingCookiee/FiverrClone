@@ -5,6 +5,8 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useQuery } from "react-query";
 import newRequest from "../../utils/newRequest";
 import { useParams } from "react-router-dom";
+import Reviews from "../../components/review/Reviews";
+
 
 // Custom arrow components
 const PrevArrow = ({ onClick }) => (
@@ -39,7 +41,21 @@ const Gig = () => {
         return res.data;
       }),
   });
-  console.log(data);
+
+  const userId = data?.userId;
+
+  const {
+    isLoading: userLoading,
+    error: userError,
+    data: userData,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () =>
+      newRequest.get(`/users/${userId}`).then((res) => {
+        return res.data;
+      }),
+    enabled: !!userId,
+  });
 
   return (
     <div className="gig flex justify-center">
@@ -70,31 +86,42 @@ const Gig = () => {
               Fiverr {">"} Graphics & Design {">"}
             </span>
             <h1 className="font-bold text-2xl">{data?.title}</h1>
-            <div className="user flex items-center gap-2.5">
-              <img
-                className="pp w-[32px] h-[32px] rounded-[50%] object-cover"
-                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <span className="font-medium text-sm">Anna Bell</span>
-              {!isNaN(data.totalStars / data.starNumber) && (
-                <div className="stars flex items-center gap-0.5">
-                {Array(Math.round(data.totalStars / data.starNumber))
-                          .fill()
-                          .map((item, i) => (
-                            <img 
-                            src="/star.png" 
-                            alt="" 
-                            key={i} 
-                            className="h-[14px] w-[14px]" />
-                          ))}
-                  
-                  <span className="text-md font-bold text-[#bdbcbc]">
-                    {Math.round(data.totalStars / data.starNumber)}
-                  </span>
-                </div>
-              )}
-            </div>
+            {userLoading ? (
+              <div className="user flex items-center gap-2.5">Loading...</div>
+            ) : userError ? (
+              <div className="user flex items-center gap-2.5">
+                Error loading user
+              </div>
+            ) : (
+              <div className="user flex items-center gap-2.5">
+                <img
+                  className="pp w-[32px] h-[32px] rounded-[50%] object-cover"
+                  src={userData?.img || "/avatar.png"}
+                  alt=""
+                />
+                <span className="font-medium text-sm">
+                  {userData?.username || "Unknown User"}
+                </span>
+                {!isNaN(data.totalStars / data.starNumber) && (
+                  <div className="stars flex items-center gap-0.5">
+                    {Array(Math.round(data.totalStars / data.starNumber))
+                      .fill()
+                      .map((item, i) => (
+                        <img
+                          src="/star.png"
+                          alt=""
+                          key={i}
+                          className="h-[14px] w-[14px]"
+                        />
+                      ))}
+
+                    <span className="text-md font-bold text-[#bdbcbc]">
+                      {Math.round(data.totalStars / data.starNumber)}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
             <Slider {...settings} className="slider ">
               {data?.images.map((image, index) => (
                 <img
@@ -107,38 +134,41 @@ const Gig = () => {
             </Slider>
             <h2 className="font-normal">About This Gig</h2>
             <p className="font-light text-[#555] leading-6	">{data?.desc}</p>
-            {isLoading ? (
-              "Loading..."
-            ) : error ? (
-              "Something went wrong!"
+            {userLoading ? (
+              <div className="user flex items-center gap-2.5">Loading...</div>
+            ) : userError ? (
+              <div className="user flex items-center gap-2.5">
+                Error loading user
+              </div>
             ) : (
               <div className="seller mt-[50px] flex flex-col gap-5">
-                <h2>About The Seller</h2>
+                <h2 className='font-medium text-xl text-[gray]'>About The Seller</h2>
                 <div className="user flex items-center gap-5">
                   <img
-                    src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                    src={userData?.img || "/avatar.png"}
                     alt=""
                     className="w-[100px] h-[100px] rounded-[50%] object-cover"
                   />
                   <div className="info flex flex-col gap-2.5">
-                    <span>Anna Bell</span>
+                    <span>{userData?.username || "Unknown User"}</span>
                     {!isNaN(data.totalStars / data.starNumber) && (
-                <div className="stars flex items-center gap-0.5">
-                {Array(Math.round(data.totalStars / data.starNumber))
+                      <div className="stars flex items-center gap-0.5">
+                        {Array(Math.round(data.totalStars / data.starNumber))
                           .fill()
                           .map((item, i) => (
-                            <img 
-                            src="/star.png" 
-                            alt="" 
-                            key={i} 
-                            className="h-[14px] w-[14px]" />
+                            <img
+                              src="/star.png"
+                              alt=""
+                              key={i}
+                              className="h-[14px] w-[14px]"
+                            />
                           ))}
-                  
-                  <span className="text-md font-bold text-[#bdbcbc]">
-                    {Math.round(data.totalStars / data.starNumber)}
-                  </span>
-                </div>
-              )}
+
+                        <span className="text-md font-bold text-[#bdbcbc]">
+                          {Math.round(data.totalStars / data.starNumber)}
+                        </span>
+                      </div>
+                    )}
                     <button className="bg-white rounded-md border border-solid border-[gray] p-[10px]">
                       Contact Me
                     </button>
@@ -148,7 +178,7 @@ const Gig = () => {
                   <div className="items flex justify-between flex-wrap ">
                     <div className="item  w-[300px] flex flex-col gap-2.5 mb-2.5">
                       <span className="title font-light">From</span>
-                      <span className="desc">USA</span>
+                      <span className="desc">{userData?.country}</span>
                     </div>
                     <div className="item  w-[300px] flex flex-col gap-2.5 mb-2.5">
                       <span className="title font-light">Member since</span>
@@ -171,157 +201,12 @@ const Gig = () => {
                   </div>
                   <hr className="h-0 border-[0.3px] border-solid border-[#e9e8e8]" />
                   <p>
-                    My name is Anna, I enjoy creating AI generated art in my
-                    spare time. I have a lot of experience using the AI program
-                    and that means I know what to prompt the AI with to get a
-                    great and incredibly detailed result.
+                  {userData?.desc || "No description provided."}
                   </p>
                 </div>
               </div>
             )}
-            <div className="reviews mt-[50px]">
-              <h2>Reviews</h2>
-              <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
-                <div className="user flex items-center">
-                  <img
-                    src="https://images.pexels.com/photos/839586/pexels-photo-839586.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-[50%] object-cover"
-                  />
-                  <div className="info flex flex-col gap-0.5 ml-2">
-                    <span>Garner David</span>
-                    <div className="country flex items-center gap-2.5 text-[gray]">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                        alt=""
-                        className="w-5"
-                      />
-                      <span>United States</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars flex gap-[5px]">
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <span className="text-md font-bold text-[#bdbcbc] ">5</span>
-                </div>
-                <p>
-                  I just want to say that art_with_ai was the first, and after
-                  this, the only artist Ill be using on Fiverr. Communication
-                  was amazing, each and every day he sent me images that I was
-                  free to request changes to. They listened, understood, and
-                  delivered above and beyond my expectations. I absolutely
-                  recommend this gig, and know already that Ill be using it
-                  again very very soon
-                </p>
-                <div className="helpful flex items-center gap-2.5">
-                  <span>Helpful?</span>
-                  <img src="/like.png" alt="" className="w-5 cursor-pointer" />
-                  <span>Yes</span>
-                  <img
-                    src="/dislike.png"
-                    alt=""
-                    className="w-5 cursor-pointer"
-                  />
-                  <span>No</span>
-                </div>
-              </div>
-              <hr className="h-0 border-[0.3px] border-solid border-[#e9e8e8] m-[50px] ml-0 mr-0" />
-              <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
-                <div className="user flex items-center">
-                  <img
-                    src="https://images.pexels.com/photos/4124367/pexels-photo-4124367.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                    className="pp w-[50px] h-[50px] rounded-[50%] object-cover"
-                  />
-                  <div className="info flex flex-col gap-0.5 ml-2">
-                    <span>Sidney Owen</span>
-                    <div className="country flex items-center gap-2.5 text-[gray]">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1e9-1f1ea.png"
-                        alt=""
-                        className="w-5"
-                      />
-                      <span>Germany</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars flex gap-[5px]">
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <span className="text-md font-bold text-[#bdbcbc] ">5</span>
-                </div>
-                <p>
-                  The designer took my photo for my book cover to the next
-                  level! Professionalism and ease of working with designer along
-                  with punctuality is above industry standards!! Whatever your
-                  project is, you need this designer!
-                </p>
-                <div className="helpful flex items-center gap-2.5">
-                  <span>Helpful?</span>
-                  <img src="/like.png" alt="" className="w-5 cursor-pointer" />
-                  <span>Yes</span>
-                  <img
-                    src="/dislike.png"
-                    alt=""
-                    className="w-5 cursor-pointer"
-                  />
-                  <span>No</span>
-                </div>
-              </div>
-              <hr className="h-0 border-[0.3px] border-solid border-[#e9e8e8] m-[50px] ml-0 mr-0" />
-              <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
-                <div className="user flex items-center">
-                  <img
-                    src="https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                    className="pp w-[50px] h-[50px] rounded-[50%] object-cover"
-                  />
-                  <div className="info flex flex-col gap-0.5 ml-2">
-                    <span>Lyle Giles </span>
-                    <div className="country flex items-center gap-2.5 text-[gray]">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                        alt=""
-                        className="w-5"
-                      />
-                      <span>United States</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars flex gap-[5px]">
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                  <span className="text-md font-bold text-[#bdbcbc] ">5</span>
-                </div>
-                <p>
-                  The designer took my photo for my book cover to the next
-                  level! Professionalism and ease of working with designer along
-                  with punctuality is above industry standards!! Whatever your
-                  project is, you need this designer!
-                </p>
-                <div className="helpful flex items-center gap-2.5">
-                  <span>Helpful?</span>
-                  <img src="/like.png" alt="" className="w-5 cursor-pointer" />
-                  <span>Yes</span>
-                  <img
-                    src="/dislike.png"
-                    alt=""
-                    className="w-5 cursor-pointer"
-                  />
-                  <span>No</span>
-                </div>
-              </div>
-            </div>
+            <Reviews gigId={id} />
           </div>
           <div className="right flex-1 border border-solid border-[#e9e8e8] p-5 flex flex-col gap-5 h-max max-h-[500px] sticky top-[150px]">
             <div className="price flex items-center justify-between">
