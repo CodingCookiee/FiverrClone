@@ -7,7 +7,6 @@ import newRequest from "../../utils/newRequest";
 import { useParams } from "react-router-dom";
 import Reviews from "../../components/reviews/Reviews";
 
-
 // Custom arrow components
 const PrevArrow = ({ onClick }) => (
   <button onClick={onClick} className="custom-prev-arrow">
@@ -22,6 +21,7 @@ const NextArrow = ({ onClick }) => (
 );
 
 const Gig = () => {
+  const { id } = useParams();
   const settings = {
     slidesToShow: 1,
     infinite: true,
@@ -31,8 +31,6 @@ const Gig = () => {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
-
-  const { id } = useParams();
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["gig"],
@@ -142,7 +140,9 @@ const Gig = () => {
               </div>
             ) : (
               <div className="seller mt-[50px] flex flex-col gap-5">
-                <h2 className='font-medium text-xl text-[gray]'>About The Seller</h2>
+                <h2 className="font-medium text-xl text-[gray]">
+                  About The Seller
+                </h2>
                 <div className="user flex items-center gap-5">
                   <img
                     src={userData?.img || "/avatar.png"}
@@ -200,9 +200,7 @@ const Gig = () => {
                     </div>
                   </div>
                   <hr className="h-0 border-[0.3px] border-solid border-[#e9e8e8]" />
-                  <p>
-                  {userData?.desc || "No description provided."}
-                  </p>
+                  <p>{userData?.desc || "No description provided."}</p>
                 </div>
               </div>
             )}

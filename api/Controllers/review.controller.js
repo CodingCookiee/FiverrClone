@@ -4,9 +4,8 @@ import Gig from "../models/gig.model.js";
 
 //  create  a review
 export const createReview = async (req, res, next) => {
-  if (req.isSeller) {
-    return next(createError(403, "Seller cannot create a review"));
-  }
+  if (req.isSeller)
+    return next(createError(403, "Sellers can't review a gig"));
 
   const newReview = new Review({
     userId: req.userId,
@@ -14,18 +13,36 @@ export const createReview = async (req, res, next) => {
     desc: req.body.desc,
     star: req.body.star,
   });
+
   try {
+    const review = await Review.findOne({
+      gigId: req.body.gigId,
+      userId: req.userId,
+    });
+
+    if (review)
+      return next(
+        createError(403, "You have already reviewed this gig")
+      );
+
+    //TODO: check if the user purchased the gig.
+    const gig = await Gig.findById(req.body.gigId);
+    if (!gig) return next(createError(404, "Gig not found"));
+
     const savedReview = await newReview.save();
-    res.status(201).json(savedReview);
-  } catch (error) {
-    next(error);
+
+    await Gig.findByIdAndUpdate(req.body.gigId, {
+      $inc: { totalStars: req.body.star, starNumber: 1 },
+    });
+    res.status(201).send(savedReview);
+  } catch (err) {
+    next(err);
   }
 };
-
 // get reviews
 export const getReviews = async (req, res, next) => {
   try {
-    const reviews = await Review.find().populate("gigId");
+    const reviews = await Review.find({ gigId: req.params.gigId });
     res.status(200).json(reviews);
   } catch (error) {
     next(error);
