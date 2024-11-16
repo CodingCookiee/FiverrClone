@@ -77,14 +77,23 @@ const Gig = () => {
                 alt=""
               />
               <span className="font-medium text-sm">Anna Bell</span>
-              <div className="stars flex items-center gap-0.5">
-                <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                <img src="/star.png" alt="" className="h-[14px] w-[14px]" />
-                <span className="text-md font-bold text-[#bdbcbc]">5</span>
-              </div>
+              {!isNaN(data.totalStars / data.starNumber) && (
+                <div className="stars flex items-center gap-0.5">
+                {Array(Math.round(data.totalStars / data.starNumber))
+                          .fill()
+                          .map((item, i) => (
+                            <img 
+                            src="/star.png" 
+                            alt="" 
+                            key={i} 
+                            className="h-[14px] w-[14px]" />
+                          ))}
+                  
+                  <span className="text-md font-bold text-[#bdbcbc]">
+                    {Math.round(data.totalStars / data.starNumber)}
+                  </span>
+                </div>
+              )}
             </div>
             <Slider {...settings} className="slider ">
               {data?.images.map((image, index) => (
@@ -113,36 +122,23 @@ const Gig = () => {
                   />
                   <div className="info flex flex-col gap-2.5">
                     <span>Anna Bell</span>
-                    <div className="stars flex items-center gap-[5px]">
-                      <img
-                        src="/star.png"
-                        alt=""
-                        className="h-[14px] w-[14px]"
-                      />
-                      <img
-                        src="/star.png"
-                        alt=""
-                        className="h-[14px] w-[14px]"
-                      />
-                      <img
-                        src="/star.png"
-                        alt=""
-                        className="h-[14px] w-[14px]"
-                      />
-                      <img
-                        src="/star.png"
-                        alt=""
-                        className="h-[14px] w-[14px]"
-                      />
-                      <img
-                        src="/star.png"
-                        alt=""
-                        className="h-[14px] w-[14px]"
-                      />
-                      <span className="text-md font-bold text-[#bdbcbc]">
-                        5
-                      </span>
-                    </div>
+                    {!isNaN(data.totalStars / data.starNumber) && (
+                <div className="stars flex items-center gap-0.5">
+                {Array(Math.round(data.totalStars / data.starNumber))
+                          .fill()
+                          .map((item, i) => (
+                            <img 
+                            src="/star.png" 
+                            alt="" 
+                            key={i} 
+                            className="h-[14px] w-[14px]" />
+                          ))}
+                  
+                  <span className="text-md font-bold text-[#bdbcbc]">
+                    {Math.round(data.totalStars / data.starNumber)}
+                  </span>
+                </div>
+              )}
                     <button className="bg-white rounded-md border border-solid border-[gray] p-[10px]">
                       Contact Me
                     </button>
@@ -336,7 +332,7 @@ const Gig = () => {
             <div className="details flex items-center justify-between text-sm">
               <div className="item flex items-center gap-2.5">
                 <img src="/clock.png" alt="" className="w-5" />
-                <span>{data?.deliveryDate} Days Delivery</span>
+                <span>{data?.deliveryTime} Days Delivery</span>
               </div>
               <div className="item flex items-center gap-2.5 ">
                 <img src="/recycle.png" alt="" className="w-5" />

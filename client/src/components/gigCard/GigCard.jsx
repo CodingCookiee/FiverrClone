@@ -35,11 +35,23 @@ const GigCard = ({ item }) => {
                     )
                 }
                     <p className='text-[#111] text-md font-light overflow-hidden line-clamp-[3]'>{item.desc}</p>
-                    <div className='star flex items-center gap-[5px]'>
-                        <img src='/star.png' alt='' className='w-[14px] h-[14px]]'/>
-                        <span className='text-sm font-bold text-[#ffc108]'>  {!isNaN(item.totalStars / item.starNumber) &&
-                            Math.round(item.totalStars / item.starNumber)}</span>
-                    </div>
+                    {!isNaN(item.totalStars / item.starNumber) && (
+                <div className="stars flex items-center gap-0.5">
+                {Array(Math.round(item.totalStars / item.starNumber))
+                          .fill()
+                          .map((item, i) => (
+                            <img 
+                            src="/star.png" 
+                            alt="" 
+                            key={i} 
+                            className="h-[14px] w-[14px]" />
+                          ))}
+                  
+                  <span className="text-md font-bold text-[#bdbcbc]">
+                    {Math.round(item.totalStars / item.starNumber)}
+                  </span>
+                </div>
+              )}
                 </div>
                 <hr className='h-0 border-[0.5px] border-solid border-[rgb(228, 228, 228)]'/>
                 <div className='detail pt-2.5 pb-2.5 pl-5 pr-5 flex items-center justify-between'>
