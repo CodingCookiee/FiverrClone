@@ -9,6 +9,6 @@ router.delete('/:id', verifyToken, deleteUser);
 // become a seller
 router.post('/:id', verifyToken, becomeSeller);
 // get User
-router.get('/:id', verifyToken, getUser);
+router.get('/:id', getUser);
 
 export default router;
