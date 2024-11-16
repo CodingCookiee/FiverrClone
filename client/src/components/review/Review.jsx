@@ -25,7 +25,7 @@ const Review = ({ review }) => {
         ) : (
           <div className="user flex items-center">
             <img
-              src={data?.img || "/noavatar.jpg"}
+              src={data?.img || "/avatar.png"}
               alt=""
               className="w-[50px] h-[50px] rounded-[50%] object-cover"
             />
