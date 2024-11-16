@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const CatCard = ({ card }) => {
     return (
-        <Link to='/gigs?cat=design'>
+        <Link to='/gigs'>
             <div className='catCard h-[344px] w-[252px] text-white
              rounded-sm relative cursor-pointer'>
                 <img src={card.img} alt={card.title}  className='w-full h-full object-cover'/>
