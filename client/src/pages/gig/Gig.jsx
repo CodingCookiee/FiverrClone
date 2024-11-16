@@ -1,7 +1,10 @@
 import "./gig.css";
 import React from "react";
 import { Slider } from "infinite-react-carousel/lib";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; 
+import { useQuery } from "react-query";
+import newRequest from "../../utils/newRequest";
+import { useParams } from "react-router-dom";
 
 // Custom arrow components
 const PrevArrow = ({ onClick }) => (
@@ -27,15 +30,27 @@ const Gig = () => {
     nextArrow: <NextArrow />, 
   };
 
+const { id } = useParams();
+
+const { isLoading, error, data, refetch } = useQuery({
+  queryKey: ["gig"],
+  queryFn: () =>
+    newRequest.get(`/gigs/single/${id}`).then((res) => {
+      return res.data;
+    }),
+});
+console.log(data);
+
   return (
-    <div className="gig flex justify-center">
-      <div className="container w-[1400px] flex gap-[50px] p-[30px] pl-0 pr-0">
+    
+        <div className="gig flex justify-center">
+        <div className="container w-[1400px] flex gap-[50px] p-[30px] pl-0 pr-0">
         <div className="left flex-[2] flex flex-col gap-5">
           <span className="breadcrumbs font-light text-uppercase text-[13px] text-[#555]">
             Fiverr {'>'} Graphics & Design {'>'}
           </span>
           <h1 className="font-bold text-2xl">
-            I will create ai generated art for you
+            {data?.title}
           </h1>
           <div className="user flex items-center gap-2.5">
             <img
@@ -54,39 +69,25 @@ const Gig = () => {
             </div>
           </div>
           <Slider {...settings} className="slider ">
-            <img
-              src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-              className="max-h-[500px] object-contain"
-            />
-            <img
-              src="https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-              className="max-h-[500px] object-contain"
-            />
-            <img
-              src="https://images.pexels.com/photos/1054777/pexels-photo-1054777.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-              className="max-h-[500px] object-contain"
-            />
+          {data?.images.map((image, index) => (
+              <img
+                src={image}
+                key={index}
+                alt=""
+                className="max-h-[500px] object-contain"
+              />
+          ))}
           </Slider>
           <h2 className="font-normal">About This Gig</h2>
           <p className="font-light text-[#555] leading-6	">
-            I use an AI program to create images based on text prompts. This
-            means I can help you to create a vision you have through a textual
-            description of your scene without requiring any reference images.
-            Some things I've found it often excels at are: Character portraits
-            (E.g. a picture to go with your DnD character) Landscapes (E.g.
-            wallpapers, illustrations to compliment a story) Logos (E.g. Esports
-            team, business, profile picture) You can be as vague or as
-            descriptive as you want. Being more vague will allow the AI to be
-            more creative which can sometimes result in some amazing images. You
-            can also be incredibly precise if you have a clear image of what you
-            want in mind. All of the images I create are original and will be
-            found nowhere else. If you have any questions you're more than
-            welcome to send me a message.
+          {data?.desc}
           </p>
-          <div className="seller mt-[50px] flex flex-col gap-5">
+         { 
+          isLoading ? (
+            "Loading..."
+          ) : error ? (
+            "Something went wrong!"
+          ) :  (<div className="seller mt-[50px] flex flex-col gap-5">
             <h2>About The Seller</h2>
             <div className="user flex items-center gap-5">
               <img
@@ -140,7 +141,7 @@ const Gig = () => {
                 incredibly detailed result.
               </p>
             </div>
-          </div>
+          </div>)}
           <div className="reviews mt-[50px]">
             <h2>Reviews</h2>
             <div className="item  flex flex-col gap-5 mb-5 ml-0 mr-0 ">
@@ -275,46 +276,36 @@ const Gig = () => {
         </div>
         <div className="right flex-1 border border-solid border-[#e9e8e8] p-5 flex flex-col gap-5 h-max max-h-[500px] sticky top-[150px]">
           <div className="price flex items-center justify-between">
-            <h3 className="font-medium">1 AI generated image</h3>
-            <h2 className="font-light">$ 59.99</h2>
+            <h3 className="font-medium">{data?.shortTitle}</h3>
+            <h2 className="font-light">$ {data?.price}</h2>
           </div>
           <p className="text-[gray] m-[10px] ml-0 mr-0">
-            I will create a unique high quality AI generated image based on a
-            description that you give me
+           {data?.shortDesc}
           </p>
           <div className="details flex items-center justify-between text-sm">
             <div className="item flex items-center gap-2.5">
               <img src="/clock.png" alt="" className="w-5" />
-              <span>2 Days Delivery</span>
+              <span>{data?.deliveryDate} Days Delivery</span>
             </div>
             <div className="item flex items-center gap-2.5 ">
               <img src="/recycle.png" alt="" className="w-5" />
-              <span>3 Revisions</span>
+              <span>{data?.revisionNumber} Revisions</span>
             </div>
           </div>
           <div className="features ">
-            <div className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]">
+          {data?.features.map((feature, index) => (
+            <div key={index} className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]">
               <img src="/greencheck.png" alt="" className="w-5" />
-              <span>Prompt writing</span>
+              <span>{feature}</span>
             </div>
-            <div className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]">
-              <img src="/greencheck.png" alt="" className="w-5" />
-              <span>Artwork delivery</span>
-            </div>
-            <div className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]">
-              <img src="/greencheck.png" alt="" className="w-5" />
-              <span>Image upscaling</span>
-            </div>
-            <div className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]">
-              <img src="/greencheck.png" alt="" className="w-5" />
-              <span>Additional design</span>
-            </div>
+          ))}
           </div>
           <button className="bg-[#1dbf73] p-2.5 text-white font-medium border-none text-[18px] cursor-pointer">
             Continue
           </button>
         </div>
       </div>
+
     </div>
   );
 };
