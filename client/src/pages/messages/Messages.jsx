@@ -11,44 +11,39 @@ function Messages() {
   const queryClient = useQueryClient();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const {
-    isLoading,
-    error,
-    data: conversations,
-  } = useQuery({
+  const { isLoading, error, data: conversations } = useQuery({
     queryKey: ["conversations"],
-    queryFn: () =>
-      newRequest.get(`/conversations`).then((res) => {
-        return res.data;
-      }),
+    queryFn: () => newRequest.get(`/conversations`).then((res) => res.data),
   });
-
-  // Fetch all users involved in conversations
+  
+  // Update the users query to run immediately and not depend on conversations
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      if (!conversations) return [];
-
-      // Get unique user IDs from conversations
-      const userIds = conversations.reduce((acc, conv) => {
-        acc.add(conv.buyerId);
-        acc.add(conv.sellerId);
-        return acc;
-      }, new Set());
-
+      if (!conversations) return {};
+      
+      // Get unique user IDs from conversations immediately
+      const userIds = [...new Set(
+        conversations.flatMap(conv => [conv.buyerId, conv.sellerId])
+      )];
+  
       // Fetch all users in parallel
-      const promises = Array.from(userIds).map((id) =>
-        newRequest.get(`/users/${id}`).then((res) => res.data)
+      const usersData = await Promise.all(
+        userIds.map(id => newRequest.get(`/users/${id}`).then(res => res.data))
       );
-
-      const usersData = await Promise.all(promises);
+  
+      // Create users lookup object
       return usersData.reduce((acc, user) => {
         acc[user._id] = user;
         return acc;
       }, {});
     },
+    // Run this query whenever conversations data changes
     enabled: !!conversations,
+    // Add staleTime to cache the results
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
+  
 
   const getUserName = (message) => {
     if (!users) return "Loading...";

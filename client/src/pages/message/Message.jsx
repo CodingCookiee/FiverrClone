@@ -58,12 +58,25 @@ const Message = () => {
 
   const getUserName = () => {
     if (!users || !conversation) return "Loading...";
-
-    if (currentUser.isSeller) {
-      return users[conversation.buyerId]?.username;
+  
+    // Handle case when there are no messages yet
+    if (!messages?.length) {
+      return currentUser.isSeller 
+        ? users[conversation.buyerId]?.username 
+        : users[conversation.sellerId]?.username;
     }
-    return users[conversation.sellerId]?.username;
+  
+    // If current user is sender, show recipient's name
+    if (messages[0].userId === currentUser._id) {
+      return currentUser.isSeller 
+        ? users[conversation.buyerId]?.username 
+        : users[conversation.sellerId]?.username;
+    }
+    
+    // If current user is recipient, show sender's name
+    return users[messages[0].userId]?.username;
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
