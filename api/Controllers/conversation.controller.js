@@ -30,7 +30,6 @@ export const getSingleConversation = async (req, res, next) => {
 };
 
 // get all conversations
-// get all conversations
 export const getConversations = async (req, res, next) => {
   try {
     const conversations = await Conversation.find({
@@ -50,11 +49,10 @@ export const getConversations = async (req, res, next) => {
 export const updateConversation = async (req, res, next) => {
   try {
     const updatedConversation = await Conversation.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       {
         $set: {
-          readBySeller: req.isSeller,
-          readByBuyer: !req.isSeller,
+          ...(req.isSeller ? { readBySeller: true } : { readByBuyer: true }),
         },
       },
       { new: true }
@@ -64,6 +62,7 @@ export const updateConversation = async (req, res, next) => {
     next(err);
   }
 };
+
 
 // delete conversation
 export const deleteConversation = async (req, res, next) => {

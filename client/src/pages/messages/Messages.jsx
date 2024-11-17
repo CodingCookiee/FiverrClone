@@ -1,15 +1,19 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import moment from "moment";
 
-
 function Messages() {
-  
+  const queryClient = useQueryClient();
+  const [readMessages, setReadMessages] = useState(new Set());
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const { isLoading, error, data: conversations } = useQuery({
+  const {
+    isLoading,
+    error,
+    data: conversations,
+  } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
       newRequest.get(`/conversations`).then((res) => {
@@ -17,51 +21,66 @@ function Messages() {
       }),
   });
 
- // Fetch all users involved in conversations
- const { data: users } = useQuery({
-  queryKey: ["users"],
-  queryFn: async () => {
-    if (!conversations) return [];
-    
-    // Get unique user IDs from conversations
-    const userIds = conversations.reduce((acc, conv) => {
-      acc.add(conv.buyerId);
-      acc.add(conv.sellerId);
-      return acc;
-    }, new Set());
+  // Fetch all users involved in conversations
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      if (!conversations) return [];
 
-    // Fetch all users in parallel
-    const promises = Array.from(userIds).map(id =>
-      newRequest.get(`/users/${id}`).then(res => res.data)
-    );
-    
-    const usersData = await Promise.all(promises);
-    return usersData.reduce((acc, user) => {
-      acc[user._id] = user;
-      return acc;
-    }, {});
-  },
-  enabled: !!conversations,
-});
+      // Get unique user IDs from conversations
+      const userIds = conversations.reduce((acc, conv) => {
+        acc.add(conv.buyerId);
+        acc.add(conv.sellerId);
+        return acc;
+      }, new Set());
 
-const getUserName = (message) => {
-  if (!users) return "Loading...";
-  
-  // If message is from another seller to current user
-  if (message.sellerId !== currentUser._id && currentUser.isSeller) {
+      // Fetch all users in parallel
+      const promises = Array.from(userIds).map((id) =>
+        newRequest.get(`/users/${id}`).then((res) => res.data)
+      );
+
+      const usersData = await Promise.all(promises);
+      return usersData.reduce((acc, user) => {
+        acc[user._id] = user;
+        return acc;
+      }, {});
+    },
+    enabled: !!conversations,
+  });
+
+  const getUserName = (message) => {
+    if (!users) return "Loading...";
+
+    // If message is from another seller to current user
+    if (message.sellerId !== currentUser._id && currentUser.isSeller) {
+      return users[message.sellerId]?.username;
+    }
+
+    // If current user is seller, show buyer's name
+    if (currentUser.isSeller) {
+      return users[message.buyerId]?.username;
+    }
+
+    // If current user is buyer, show seller's name
     return users[message.sellerId]?.username;
-  }
-  
-  // If current user is seller, show buyer's name
-  if (currentUser.isSeller) {
-    return users[message.buyerId]?.username;
-  }
-  
-  // If current user is buyer, show seller's name
-  return users[message.sellerId]?.username;
-};
+  };
 
-
+  const handleMarkAsRead = async (id) => {
+    try {
+      await newRequest.put(`/conversations/${id}`);
+      // Refetch conversations to get updated read status
+      queryClient.invalidateQueries("messages");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //  helper function
+  const isMessageRead = (message) => {
+    if (currentUser.isSeller) {
+      return message.readBySeller;
+    }
+    return message.readByBuyer;
+  };
 
   return (
     <div className="messages flex justify-center text-[#555]">
@@ -93,7 +112,7 @@ const getUserName = (message) => {
           <table className="w-full">
             <tr className=" h-[50px]">
               <th className="text-left">
-                {currentUser.isSeller ? 'Buyer' : "Seller"}
+                {currentUser.isSeller ? "Buyer" : "Seller"}
               </th>
               <th className="text-left">Last Message</th>
               <th className="text-left">Date</th>
@@ -110,14 +129,19 @@ const getUserName = (message) => {
                     {message?.lastMessage?.substring(0, 100)}...
                   </Link>
                 </td>
-                <td className="p-2.5 ">{moment(message.updatedAt).fromNow()}</td>
+                <td className="p-2.5 ">
+                  {moment(message.updatedAt).fromNow()}
+                </td>
                 <td className="p-2.5">
-                  <button
-                    className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
-               border-none p-[10px] cursor-pointer"
-                  >
-                    Mark as Read
-                  </button>
+                  {!isMessageRead(message) && (
+                    <button
+                      onClick={() => handleMarkAsRead(message._id)}
+                      className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
+        border-none p-[10px] cursor-pointer"
+                    >
+                      Mark as Read
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -127,5 +151,4 @@ const getUserName = (message) => {
     </div>
   );
 }
-
 export default Messages;
