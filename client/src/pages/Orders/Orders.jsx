@@ -15,7 +15,6 @@ function MyOrders() {
         return res.data;
       }),
   });
-  console.log(data);
 
   return (
     <div className="orders flex justify-center text-[#555]">
