@@ -1,9 +1,14 @@
 import express from 'express'
-import { deleteUser } from '../Controllers/user.controller.js';
+import { verifyToken } from '../middleware/jwt.js';
+import { createOrder, getOrders, intent, updateOrder, deleteOrder } from '../Controllers/order.controller.js';
+
 
 const router = express.Router();
 
-router.get('/test', deleteUser)
-
+router.post('/:gigId',verifyToken, createOrder)
+router.get('/', getOrders)
+router.post('/create_payment_intent/:id', verifyToken, intent)
+router.put('/',verifyToken, updateOrder)
+router.delete('/:id',verifyToken, deleteOrder)
 
 export default  router
