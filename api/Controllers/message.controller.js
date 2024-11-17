@@ -22,7 +22,7 @@ export const createMessage = async (req, res, next) => {
       },
       { new: true }
     ); 
-    status(201).send(savedMessage);
+    res.status(201).send(savedMessage);
   } catch (err) {
     next(err);
   }

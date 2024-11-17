@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/',verifyToken, createConversation)
 router.get('/',verifyToken, getConversations)
-router.get('/single/:id',verifyToken, getSingleConversation)
+router.get('/single/:id', verifyToken, getSingleConversation)
 router.put('/:id',verifyToken, updateConversation)
 router.delete('/:id',verifyToken, deleteConversation)
 

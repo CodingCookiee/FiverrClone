@@ -128,7 +128,7 @@ function Messages() {
                 className={
                   isMessageRead(message) && "active h-[100px] bg-[#1dbf730f] "
                 }
-                key={message._id}
+                key={message.id}
               >
                 <td className="p-2.5 font-bold">{getUserName(message)}</td>
                 <td className="p-2.5">
