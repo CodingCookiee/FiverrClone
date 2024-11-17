@@ -101,24 +101,21 @@ const Message = () => {
         ) : error ? (
           <div>Something went wrong!</div>
         ) : (
-          <div
-            className="messages m-[30px] ml-0 mr-0 p-[50px] flex 
-        flex-col gap-5 h-[500px] overflow-y-scroll"
-          >
-            {messages.map((message) => (
+          <div className="messages m-[30px] ml-0 mr-0 p-[50px] flex flex-col gap-5 h-[500px] overflow-y-scroll">
+            {messages?.map((message) => (
               <div
                 className={
                   message.userId === currentUser._id
-                    ? "item owner flex gap-5 max-w-[600px] text-[18px] flex-row-reverse self-end	"
-                    : "item  flex gap-5 max-w-[600px] text-[18px] "
+                    ? "item owner flex gap-5 max-w-[600px] text-[18px] flex-row-reverse self-end"
+                    : "item flex gap-5 max-w-[600px] text-[18px]"
                 }
                 key={message._id}
               >
                 <img
                   src={
                     message.userId === currentUser._id
-                      ? currentUser.img
-                      : users[message.userId]?.img
+                      ? currentUser.img || "avatar.png"
+                      : users?.[message.userId]?.img || "/avatar.png"
                   }
                   alt=""
                   className="w-[40px] h-[40px] rounded-[50%] object-cover"
@@ -127,7 +124,7 @@ const Message = () => {
                   className={
                     message.userId === currentUser._id
                       ? "max-w-[500px] rounded-b-3xl rounded-tl-3xl p-5 bg-[royalblue] text-white"
-                      : "max-w-[500px] rounded-b-3xl rounded-tr-3xl  bg-[#e7e7e7] p-5 text-[#5e5d5d] font-light"
+                      : "max-w-[500px] rounded-b-3xl rounded-tr-3xl bg-[#e7e7e7] p-5 text-[#5e5d5d] font-light"
                   }
                 >
                   {message?.desc || "No message yet"}
@@ -161,4 +158,3 @@ const Message = () => {
 };
 
 export default Message;
-
