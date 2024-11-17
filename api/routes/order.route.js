@@ -6,7 +6,7 @@ import { createOrder, getOrders, intent, updateOrder, deleteOrder } from '../Con
 const router = express.Router();
 
 router.post('/:gigId',verifyToken, createOrder)
-router.get('/', getOrders)
+router.get('/',verifyToken, getOrders)
 router.post('/create_payment_intent/:id', verifyToken, intent)
 router.put('/',verifyToken, updateOrder)
 router.delete('/:id',verifyToken, deleteOrder)

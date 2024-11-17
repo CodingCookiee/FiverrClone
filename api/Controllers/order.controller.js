@@ -1,7 +1,7 @@
-import  Order  from "../models/order.model.js";
-import User  from "../models/user.model.js";
-import  Gig  from "../models/gig.model.js";
-import  createError  from "../utils/createError.js";
+import Order from "../models/order.model.js";
+import User from "../models/user.model.js";
+import Gig from "../models/gig.model.js";
+import createError from "../utils/createError.js";
 // import Stripe from "stripe";
 
 // create a new order:
@@ -10,16 +10,15 @@ export const createOrder = async (req, res, next) => {
     const gig = await Gig.findById(req.params.gigId);
     const newOrder = new Order({
       gigId: gig._id,
-      userId: req.user._id,
       img: gig.cover,
       title: gig.title,
-      buyerId: gig.userId,
+      buyerId: req.userId,
       sellerId: gig.userId,
       price: gig.price,
       payment_intent: "temporary",
     });
     await newOrder.save();
-    res.status(201).send(newOrder);
+    res.status(201).send("Order has been created.");
   } catch (err) {
     next(err);
   }
@@ -29,10 +28,10 @@ export const createOrder = async (req, res, next) => {
 export const getOrders = async (req, res, next) => {
   try {
     const orders = await Order.find({
-      ...(req.isSeller
-        ? { sellerId: req.user._id }
-        : { buyerId: req.user._id }),
+      ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
+      isCompleted: true,
     });
+
     res.status(200).send(orders);
   } catch (err) {
     next(err);
