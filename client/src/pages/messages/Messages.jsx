@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 import moment from "moment";
 
 function Messages() {
   const queryClient = useQueryClient();
-  const [readMessages, setReadMessages] = useState(new Set());
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   const {
@@ -14,7 +13,7 @@ function Messages() {
     error,
     data: conversations,
   } = useQuery({
-    queryKey: ["messages"],
+    queryKey: ["conversations"],
     queryFn: () =>
       newRequest.get(`/conversations`).then((res) => {
         return res.data;
@@ -65,14 +64,17 @@ function Messages() {
     return users[message.sellerId]?.username;
   };
 
-  const handleMarkAsRead = async (id) => {
-    try {
-      await newRequest.put(`/conversations/${id}`);
-      // Refetch conversations to get updated read status
-      queryClient.invalidateQueries("messages");
-    } catch (err) {
-      console.log(err);
-    }
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return newRequest.put(`/conversations/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conversations"]);
+    },
+  });
+
+  const handleMarkAsRead = (id) => {
+    mutation.mutate(id);
   };
   //  helper function
   const isMessageRead = (message) => {
@@ -120,7 +122,9 @@ function Messages() {
             </tr>
             {conversations.map((message) => (
               <tr
-                className="active h-[100px] bg-[#1dbf730f] "
+                className={
+                  isMessageRead(message) && "active h-[100px] bg-[#1dbf730f] "
+                }
                 key={message._id}
               >
                 <td className="p-2.5 font-bold">{getUserName(message)}</td>
@@ -135,7 +139,7 @@ function Messages() {
                 <td className="p-2.5">
                   {!isMessageRead(message) && (
                     <button
-                      onClick={() => handleMarkAsRead(message._id)}
+                      onClick={() => handleMarkAsRead(message.id)}
                       className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
         border-none p-[10px] cursor-pointer"
                     >
