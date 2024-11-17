@@ -1,9 +1,15 @@
 import express from 'express'
-import { deleteUser } from '../Controllers/user.controller.js';
+import { verifyToken } from '../middleware/jwt.js';
+import { createConversation, deleteConversation, getConversations, getSingleConversation, updateConversation } from '../Controllers/conversation.controller.js';
 
 const router = express.Router();
 
-router.get('/test', deleteUser)
+router.get('/',verifyToken, getConversations)
+router.post('/',verifyToken, createConversation)
+router.get('/single/:id',verifyToken, getSingleConversation)
+router.put('/:id',verifyToken, updateConversation)
+router.delete('/:id',verifyToken, deleteConversation)
+
 
 
 export default  router
