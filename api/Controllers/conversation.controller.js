@@ -21,13 +21,14 @@ export const createConversation = async (req, res, next) => {
 // get single conversation
 export const getSingleConversation = async (req, res, next) => {
   try {
-    const conversation = await Conversation.findById(req.params.id);
+    const conversation = await Conversation.findOne({ id: req.params.id });
     if (!conversation) return next(createError(404, "Not found!"));
     res.status(200).json(conversation);
   } catch (err) {
     next(err);
   }
 };
+
 
 // get all conversations
 export const getConversations = async (req, res, next) => {
@@ -49,7 +50,7 @@ export const getConversations = async (req, res, next) => {
 export const updateConversation = async (req, res, next) => {
   try {
     const updatedConversation = await Conversation.findOneAndUpdate(
-      { _id: req.params.id },
+      { id: req.params.id },
       {
         $set: {
           ...(req.isSeller ? { readBySeller: true } : { readByBuyer: true }),

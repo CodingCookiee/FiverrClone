@@ -20,13 +20,14 @@ const Message = () => {
       }),
   });
 
-  const { data: conversation } = useQuery({
-    queryKey: ["conversation", id],
-    queryFn: () =>
-      newRequest.get(`/conversations/single/${id}`).then((res) => {
-        return res.data;
-      }),
-  });
+ 
+const { data: conversation } = useQuery({
+  queryKey: ["conversation", id],
+  queryFn: () =>
+    newRequest.get(`/conversations/single/${id}`).then((res) => {
+      return res.data;
+    }),
+});
 
   const mutation = useMutation({
     mutationFn: (message) => {

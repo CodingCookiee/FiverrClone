@@ -1,37 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { Link, } from "react-router-dom";
+import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import moment from "moment";
 
-
 function Messages() {
-
-  
   const queryClient = useQueryClient();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const { isLoading, error, data: conversations } = useQuery({
+  const {
+    isLoading,
+    error,
+    data: conversations,
+  } = useQuery({
     queryKey: ["conversations"],
     queryFn: () => newRequest.get(`/conversations`).then((res) => res.data),
   });
-  
+
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return newRequest.put(`/conversations/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conversations"]);
+    },
+  });
+
   // Update the users query to run immediately and not depend on conversations
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       if (!conversations) return {};
-      
+
       // Get unique user IDs from conversations immediately
-      const userIds = [...new Set(
-        conversations.flatMap(conv => [conv.buyerId, conv.sellerId])
-      )];
-  
+      const userIds = [
+        ...new Set(
+          conversations.flatMap((conv) => [conv.buyerId, conv.sellerId])
+        ),
+      ];
+
       // Fetch all users in parallel
       const usersData = await Promise.all(
-        userIds.map(id => newRequest.get(`/users/${id}`).then(res => res.data))
+        userIds.map((id) =>
+          newRequest.get(`/users/${id}`).then((res) => res.data)
+        )
       );
-  
+
       // Create users lookup object
       return usersData.reduce((acc, user) => {
         acc[user._id] = user;
@@ -43,7 +57,6 @@ function Messages() {
     // Add staleTime to cache the results
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-  
 
   const getUserName = (message) => {
     if (!users) return "Loading...";
@@ -62,24 +75,8 @@ function Messages() {
     return users[message.sellerId]?.username;
   };
 
-  const mutation = useMutation({
-    mutationFn: (id) => {
-      return newRequest.put(`/conversations/${id}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["conversations"]);
-    },
-  });
-
   const handleMarkAsRead = (id) => {
     mutation.mutate(id);
-  };
-  //  helper function
-  const isMessageRead = (message) => {
-    if (currentUser.isSeller) {
-      return message.readBySeller;
-    }
-    return message.readByBuyer;
   };
 
   return (
@@ -121,13 +118,15 @@ function Messages() {
             {conversations.map((message) => (
               <tr
                 className={
-                  isMessageRead(message) && "active h-[100px] bg-[#1dbf730f] "
+                  ((currentUser.isSeller && !message.readBySeller) ||
+                    (!currentUser.isSeller && !message.readByBuyer)) &&
+                  "active h-[100px] bg-[#1dbf730f] "
                 }
                 key={message.id}
               >
                 <td className="p-2.5 font-bold">{getUserName(message)}</td>
                 <td className="p-2.5">
-                  <Link to={`/message/${message._id}`} className="link">
+                  <Link to={`/message/${message.id}`} className="link">
                     {message?.lastMessage?.substring(0, 100)}...
                   </Link>
                 </td>
@@ -135,7 +134,8 @@ function Messages() {
                   {moment(message.updatedAt).fromNow()}
                 </td>
                 <td className="p-2.5">
-                  {!isMessageRead(message) && (
+                  {((currentUser.isSeller && !message.readBySeller) ||
+                    (!currentUser.isSeller && !message.readByBuyer)) && (
                     <button
                       onClick={() => handleMarkAsRead(message.id)}
                       className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
