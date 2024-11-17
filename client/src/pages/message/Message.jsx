@@ -109,7 +109,7 @@ const Message = () => {
               <div
                 className={
                   message.userId === currentUser._id
-                    ? "item  flex gap-5 max-w-[600px] text-[18px]  owner flex-row-reverse self-end	"
+                    ? "item owner flex gap-5 max-w-[600px] text-[18px] flex-row-reverse self-end	"
                     : "item  flex gap-5 max-w-[600px] text-[18px] "
                 }
                 key={message._id}
