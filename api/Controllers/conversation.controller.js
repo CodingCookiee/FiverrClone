@@ -30,16 +30,21 @@ export const getSingleConversation = async (req, res, next) => {
 };
 
 // get all conversations
+// get all conversations
 export const getConversations = async (req, res, next) => {
   try {
-    const conversations = await Conversation.find(
-      req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
-    ).sort({ updatedAt: -1 });
+    const conversations = await Conversation.find({
+      $or: [
+        { sellerId: req.userId },
+        { buyerId: req.userId }
+      ]
+    }).sort({ updatedAt: -1 });
     res.status(200).json(conversations);
   } catch (err) {
     next(err);
   }
 };
+
 
 // update conversation
 export const updateConversation = async (req, res, next) => {

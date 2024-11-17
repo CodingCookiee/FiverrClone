@@ -44,8 +44,21 @@ function Messages() {
   enabled: !!conversations,
 });
 
-const getUserName = (userId) => {
-  return users?.[userId]?.username || "Loading...";
+const getUserName = (message) => {
+  if (!users) return "Loading...";
+  
+  // If message is from another seller to current user
+  if (message.sellerId !== currentUser._id && currentUser.isSeller) {
+    return users[message.sellerId]?.username;
+  }
+  
+  // If current user is seller, show buyer's name
+  if (currentUser.isSeller) {
+    return users[message.buyerId]?.username;
+  }
+  
+  // If current user is buyer, show seller's name
+  return users[message.sellerId]?.username;
 };
 
 
@@ -91,7 +104,7 @@ const getUserName = (userId) => {
                 className="active h-[100px] bg-[#1dbf730f] "
                 key={message._id}
               >
-                <td className="p-2.5 font-bold">{currentUser.isSeller ? getUserName(message.buyerId) : getUserName(message.sellerId)}</td>
+                <td className="p-2.5 font-bold">{getUserName(message)}</td>
                 <td className="p-2.5">
                   <Link to="/message/123" className="link">
                     {message?.lastMessage?.substring(0, 100)}...
