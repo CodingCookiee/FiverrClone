@@ -75,8 +75,16 @@ function Messages() {
     return users[message.sellerId]?.username;
   };
 
+
   const handleMarkAsRead = (id) => {
     mutation.mutate(id);
+  };
+  //  helper function
+  const isMessageRead = (message) => {
+    if (currentUser.isSeller) {
+      return message.readBySeller;
+    }
+    return message.readByBuyer;
   };
 
   return (
@@ -118,9 +126,7 @@ function Messages() {
             {conversations.map((message) => (
               <tr
                 className={
-                  ((currentUser.isSeller && !message.readBySeller) ||
-                    (!currentUser.isSeller && !message.readByBuyer)) &&
-                  "active h-[100px] bg-[#1dbf730f] "
+                  isMessageRead(message) && "active h-[100px] bg-[#1dbf730f] "
                 }
                 key={message.id}
               >
@@ -134,8 +140,7 @@ function Messages() {
                   {moment(message.updatedAt).fromNow()}
                 </td>
                 <td className="p-2.5">
-                  {((currentUser.isSeller && !message.readBySeller) ||
-                    (!currentUser.isSeller && !message.readByBuyer)) && (
+                  {!isMessageRead(message) && (
                     <button
                       onClick={() => handleMarkAsRead(message.id)}
                       className="bg-[#1dbf73] hover:bg-[#10b981] text-white font-medium
