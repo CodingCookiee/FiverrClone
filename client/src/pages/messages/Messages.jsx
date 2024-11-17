@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import moment from "moment";
 
+
 function Messages() {
+
+  
   const queryClient = useQueryClient();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -129,7 +132,7 @@ function Messages() {
               >
                 <td className="p-2.5 font-bold">{getUserName(message)}</td>
                 <td className="p-2.5">
-                  <Link to="/message/123" className="link">
+                  <Link to={`/message/${message._id}`} className="link">
                     {message?.lastMessage?.substring(0, 100)}...
                   </Link>
                 </td>
