@@ -32,7 +32,7 @@ const Gig = () => {
     nextArrow: <NextArrow />,
   };
 
-  const { isLoading, error, data, refetch } = useQuery({
+  const { isLoading, error, data } = useQuery({
     queryKey: ["gig"],
     queryFn: () =>
       newRequest.get(`/gigs/single/${id}`).then((res) => {
@@ -41,7 +41,6 @@ const Gig = () => {
   });
 
   const userId = data?.userId;
-
   const {
     isLoading: userLoading,
     error: userError,
