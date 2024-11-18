@@ -6,7 +6,6 @@ import { useQuery, useQueryClient, useMutation } from "react-query";
 
 const MyGigs = () => {
   const currentUser = getCurrentUser();
-  console.log(currentUser._id);
   const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery({
@@ -16,7 +15,6 @@ const MyGigs = () => {
         return res.data;
       }),
   });
-  console.log(data);
 
   const mutation = useMutation({
     mutationFn: (id) => {

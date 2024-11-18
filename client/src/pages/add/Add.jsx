@@ -66,11 +66,12 @@ const Add = () => {
       queryClient.invalidateQueries(["myGigs"]);
     },
   });
+  console.log(state);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(state);
-    navigate("/mygigs");
+    // navigate("/mygigs");
   };
 
   return (
@@ -81,25 +82,24 @@ const Add = () => {
         </h1>
         <div className="sections flex justify-between gap-24">
           <div className="info flex-1 flex flex-col gap-2.5 justify-between">
-            <label htmlFor="text" className="text-[gray] text-[18px]">
+            <label htmlFor="title" className="text-[gray] text-[18px]">
               Title
             </label>
             <input
               className="p-5 border border-solid border-[lightgrey] rounded-md
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               type="text"
-              id="text"
+              id="title"
+              name="title"
               placeholder="e.g. I will do something I'm really good at"
-              value={state.title}
               onChange={handleChange}
             />
             <label htmlFor="cats" className="text-[gray] text-[18px]">
               Category
             </label>
             <select
-              value={state.cat}
               onChange={handleChange}
-              name="cats"
+              name="cat"
               id="cats"
               className="p-5  border-solid  block w-full px-4 py-2 pr-8 text-gray-700 bg-white border border-gray-300 rounded-md 
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
@@ -166,14 +166,13 @@ const Add = () => {
               Description
             </label>
             <textarea
-              name=""
+            name="desc"
               id="desc"
               placeholder="Brief descriptions to introduce your service to customers"
               cols="0"
               rows="16"
               className="p-5 border border-solid border-[lightgrey] rounded-md
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
-              value={state.desc}
               onChange={handleChange}
             ></textarea>
             <button
@@ -193,22 +192,21 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               type="text"
               id="service"
+              name="shortTitle"
               placeholder="e.g. One-page web design"
-              value={state.service}
               onChange={handleChange}
             />
             <label htmlFor="sDesc" className="text-[gray] text-[18px]">
               Short Description
             </label>
             <textarea
-              name=""
+              name="shortDesc"
               id="sDesc"
               placeholder="Short description of your service"
               cols="30"
               rows="10"
               className="p-5 border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none
                focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
-              value={state.sDesc}
               onChange={handleChange}
             ></textarea>
             <label htmlFor="delivery" className="text-[gray] text-[18px]">
@@ -219,7 +217,7 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               type="number"
               id="delivery"
-              value={state.delivery}
+              name="deliveryTime"
               onChange={handleChange}
             />
             <label htmlFor="rev" className="text-[gray] text-[18px]">
@@ -230,7 +228,7 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               type="number"
               id="rev"
-              value={state.rev}
+              name="revisionNumber"
               onChange={handleChange}
             />
             <label htmlFor="features" className="text-[gray] text-[18px]">
@@ -287,7 +285,7 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               type="number"
               id="price"
-              value={state.price}
+              name="price"
               onChange={handleChange}
             />
           </div>
