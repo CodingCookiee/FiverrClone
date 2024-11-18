@@ -233,7 +233,10 @@ const Gig = () => {
                 </div>
               ))}
             </div>
-            <button className="bg-[#1dbf73] p-2.5 text-white font-medium border-none text-[18px] cursor-pointer">
+            <button 
+            className="bg-[#1dbf73] p-2.5 text-white font-medium
+             border-none text-[18px] cursor-pointer"
+             >
               Continue
             </button>
           </div>
