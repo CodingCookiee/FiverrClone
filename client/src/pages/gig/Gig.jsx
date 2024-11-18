@@ -81,7 +81,7 @@ const Gig = () => {
         <div className="container w-[1400px] flex gap-[50px] p-[30px] pl-0 pr-0">
           <div className="left flex-[2] flex flex-col gap-5">
             <span className="breadcrumbs font-light text-uppercase text-[13px] text-[#555]">
-              Fiverr {">"} Graphics & Design {">"}
+              <Link to="/gigs">Gigs</Link> {">"} {data?.cat} {">"}
             </span>
             <h1 className="font-bold text-2xl">{data?.title}</h1>
             {userLoading ? (

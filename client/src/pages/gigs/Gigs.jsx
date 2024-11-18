@@ -3,7 +3,7 @@ import GigCard from "../../components/gigCard/GigCard.jsx";
 import { useRef, useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import newRequest from "../../utils/newRequest.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const Gigs = () => {
   const [sort, setSort] = useState("sales");
@@ -11,42 +11,43 @@ const Gigs = () => {
   const minRef = useRef();
   const maxRef = useRef();
   const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const searchTerm = params.get("search");
 
- // Modify the queryFn in useQuery to handle the popular sort
-const { isLoading, error, data, refetch } = useQuery({
-  queryKey: ["gigs", search, sort],
-  queryFn: () => {
-    return newRequest
-      .get(
-        `/gigs${search ? search : "?"}${search ? "&" : ""}min=${
-          minRef.current.value || 0
-        }&max=${maxRef.current.value || 1000000000}&sort=${sort}`
-      )
-      .then((res) => {
-        let gigs = res.data;
-        if (sort === "popular") {
-          // Sort by rating, filtering for ratings > 4
-          return gigs.sort((a, b) => {
-            const ratingA = Math.round(a.totalStars / a.starNumber) || 0;
-            const ratingB = Math.round(b.totalStars / b.starNumber) || 0;
-            
-            // First prioritize gigs with rating > 4
-            const isHighRatedA = ratingA > 4;
-            const isHighRatedB = ratingB > 4;
-            
-            if (isHighRatedA && !isHighRatedB) return -1;
-            if (!isHighRatedA && isHighRatedB) return 1;
-            
-            // Then sort by actual rating value
-            return ratingB - ratingA;
-          });
-        }
-        return gigs;
-      });
-  },
-});
+  // Modify the queryFn in useQuery to handle the popular sort
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["gigs", search, sort],
+    queryFn: () => {
+      return newRequest
+        .get(
+          `/gigs${search ? search : "?"}${search ? "&" : ""}min=${
+            minRef.current.value || 0
+          }&max=${maxRef.current.value || 1000000000}&sort=${sort}`
+        )
+        .then((res) => {
+          let gigs = res.data;
+          if (sort === "popular") {
+            // Sort by rating, filtering for ratings > 4
+            return gigs.sort((a, b) => {
+              const ratingA = Math.round(a.totalStars / a.starNumber) || 0;
+              const ratingB = Math.round(b.totalStars / b.starNumber) || 0;
 
-  
+              // First prioritize gigs with rating > 4
+              const isHighRatedA = ratingA > 4;
+              const isHighRatedB = ratingB > 4;
+
+              if (isHighRatedA && !isHighRatedB) return -1;
+              if (!isHighRatedA && isHighRatedB) return 1;
+
+              // Then sort by actual rating value
+              return ratingB - ratingA;
+            });
+          }
+          return gigs;
+        });
+    },
+  });
+
   const reSort = (type) => {
     setSort(type);
     setOpen(false);
@@ -66,8 +67,9 @@ const { isLoading, error, data, refetch } = useQuery({
         className="container w-[1400px] p-[30px] pl-0 pr-0 flex
          flex-col gap-[15px]"
       >
-        <span className="breadcrumbs font-light text-[13px] text-[#555] text-uppercase ">
-          Fiverr {">"} Graphics & Design {">"}
+        <span className="breadcrumbs font-light text-[13px] text-[#555] text-uppercase">
+          <Link to="/">Fiverr</Link> {" > "}
+          {searchTerm ? decodeURIComponent(searchTerm) : "Gigs"} {" > "}
         </span>
         <h1 className="font-bold text-2xl">AI Artists</h1>
         <p className="text-[#999] font-light">
