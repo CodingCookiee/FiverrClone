@@ -104,17 +104,32 @@ const Add = () => {
               className="p-5  border-solid  block w-full px-4 py-2 pr-8 text-gray-700 bg-white border border-gray-300 rounded-md 
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
             >
-              <option className="text-base font-light" value="design">
-                Design
+              <option className="text-base font-light" value='Graphics & Design'>
+                Graphics & Design
               </option>
-              <option className="text-base font-light" value="web">
-                Web Development
+              <option className="text-base font-light" value="Digital Marketing">
+                Digital Marketing
               </option>
-              <option className="text-base font-light" value="animation">
-                Animation
+              <option className="text-base font-light" value="Writing & Translation">
+                Writing & Translation
               </option>
-              <option className="text-base font-light" value="music">
-                Music
+              <option className="text-base font-light" value="Video & Animation">
+                Video & Animation
+              </option>
+              <option className="text-base font-light" value="Music & Audio">
+                Music & Audio
+              </option>
+              <option className="text-base font-light" value="Programming & Tech">
+                Programming & Tech
+              </option>
+              <option className="text-base font-light" value="Business & Management">
+                Business & Management
+              </option>
+              <option className="text-base font-light" value="Finance">
+                Finance
+              </option>
+              <option className="text-base font-light" value="AI Services">
+                AI Services
               </option>
             </select>
             <div className="images flex flex-col gap-2.5">
