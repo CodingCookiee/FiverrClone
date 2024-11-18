@@ -56,12 +56,13 @@ export const getGigs = async (req, res, next) => {
         ...(q.max && { $lt: q.max }),
       },
     }),
-    // ...(q.title && { title: { $regex: q.title, $options: "i" } }), // Specific title search
-    // ...(q.search && { title: { $regex: q.search, $options: "i" } }),
-
-    // Prioritize 'title' over 'search' if both are provided
-...(q.title ? { title: { $regex: q.title, $options: "i" } } : (q.search && { title: { $regex: q.search, $options: "i" } })),
-
+    ...(q.search && {
+      $or: [
+        { title: { $regex: decodeURIComponent(q.search), $options: "i" } },
+        { desc: { $regex: decodeURIComponent(q.search), $options: "i" } },
+        { cat: { $regex: decodeURIComponent(q.search), $options: "i" } }
+      ]
+    }),
   };
 
   try {
