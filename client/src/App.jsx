@@ -11,14 +11,14 @@ import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import Pay from "./pages/pay/Pay";
+import Success from "./pages/success/Success";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
-  Route,
-  Link,
 } from "react-router-dom";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +80,15 @@ const App = () => {
           path: "/register",
           element: <Register />,
         },
+        {
+          path: "/pay",
+          element: <Pay />,
+        },
+        {
+          path: "/success",
+          element: <Success />,
+        },
+       
       ],
     },
   ]);
