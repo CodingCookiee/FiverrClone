@@ -8,11 +8,14 @@ const Featured = () => {
   const popularBtn =
     "text-white bg border border-solid border-white rounded-3xl text-sm p-[5px] pl-2.5 pr-2.5 cursor pointer";
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      navigate(`/gigs?search=${encodeURIComponent(input)}`);
-    };
-    
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/gigs?search=${encodeURIComponent(input)}`);
+  };
+
+  const handlePopularSearch = (searchTerm) => {
+    navigate(`/gigs?search=${encodeURIComponent(searchTerm)}`);
+  };
 
   return (
     <div
@@ -48,10 +51,30 @@ const Featured = () => {
           </div>
           <div className="popular flex items-center gap-2.5 ">
             <span>Popular:</span>
-            <button className={popularBtn}>Web Design</button>
-            <button className={popularBtn}>WordPress</button>
-            <button className={popularBtn}>Logo Design</button>
-            <button className={popularBtn}>AI Services</button>
+            <button
+              className={popularBtn}
+              onClick={() => handlePopularSearch("Graphics & Design")}
+            >
+              Graphics & Design
+            </button>
+            <button
+              className={popularBtn}
+              onClick={() => handlePopularSearch("Voice Over")}
+            >
+              Voice Over
+            </button>
+            <button
+              className={popularBtn}
+              onClick={() => handlePopularSearch("Logo Design")}
+            >
+              Logo Design
+            </button>
+            <button
+              className={popularBtn}
+              onClick={() => handlePopularSearch("SEO")}
+            >
+              SEO
+            </button>
           </div>
         </div>
         <div className="featured__right">
