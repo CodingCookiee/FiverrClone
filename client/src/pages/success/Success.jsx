@@ -8,20 +8,25 @@ const Success = () => {
   const payment_intent = params.get("payment_intent");
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        await newRequest.put("/orders", { payment_intent });
-        setTimeout(() => {
-          navigate("/orders");
-        }, 5000);
+        const response = await newRequest.put("/orders", { payment_intent });
+        if(response.status === 200) {
+          setTimeout(() => {
+            navigate("/orders");
+          }, 5000);
+        }
       } catch (err) {
         console.log(err);
       }
     };
-
+  
     makeRequest();
   }, []);
+  
 
 
     return (

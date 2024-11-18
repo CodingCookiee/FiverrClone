@@ -22,6 +22,7 @@ const NextArrow = ({ onClick }) => (
 
 const Gig = () => {
   const { id } = useParams();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const settings = {
     slidesToShow: 1,
     infinite: true,
@@ -233,7 +234,7 @@ const Gig = () => {
               ))}
             </div>
             <div className="btn">
-              {userData?._id === data?.userId ? (
+              {currentUser._id === data?.userId ? (
                 <button
                   className="bg-gray-400 p-2.5 text-white font-medium
       border-none text-[18px] cursor-not-allowed w-full"

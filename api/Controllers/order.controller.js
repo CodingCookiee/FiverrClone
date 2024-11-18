@@ -14,11 +14,6 @@ export const intent = async (req, res, next) => {
     automatic_payment_methods: { enabled: true },
   });
 
-  // user cannot pay for his own gig; cannot create order for it own gig
-  if (req.userId === gig.userId) {
-    return next(createError(400, "You cannot pay for your own gig"));
-  }
-
   const newOrder = new Order({
     gigId: gig._id,
     img: gig.cover,
@@ -40,8 +35,11 @@ export const intent = async (req, res, next) => {
 export const getOrders = async (req, res, next) => {
   try {
     const orders = await Order.find({
-      ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
-      isCompleted: true,
+      $or: [
+        { sellerId: req.userId },
+        { buyerId: req.userId }
+      ],
+      isCompleted: true
     });
 
     res.status(200).send(orders);
@@ -50,10 +48,11 @@ export const getOrders = async (req, res, next) => {
   }
 };
 
+
 // confirm order:
 export const confirm = async (req, res, next) => {
   try {
-    const orders = await Order.findOneAndUpdate(
+    const order = await Order.findOneAndUpdate(
       {
         payment_intent: req.body.payment_intent,
       },
@@ -61,13 +60,15 @@ export const confirm = async (req, res, next) => {
         $set: {
           isCompleted: true,
         },
-      }
+      },
+      { new: true } // Return updated document
     );
     res.status(200).send("Order has been confirmed");
   } catch (err) {
     next(err);
   }
 };
+
 
 // delete order
 export const deleteOrder = async (req, res, next) => {
