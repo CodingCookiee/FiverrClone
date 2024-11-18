@@ -232,14 +232,26 @@ const Gig = () => {
                 </div>
               ))}
             </div>
-            <Link to={`/pay/${id}`}>
-              <button
-                className="bg-[#1dbf73] hover:bg-[#10b981] p-2.5 text-white font-medium
-             border-none text-[18px] cursor-pointer"
-              >
-                Continue
-              </button>
-            </Link>
+            <div className="btn">
+              {userData?._id === data?.userId ? (
+                <button
+                  className="bg-gray-400 p-2.5 text-white font-medium
+      border-none text-[18px] cursor-not-allowed w-full"
+                  disabled
+                >
+                  Cannot Purchase Own Gig
+                </button>
+              ) : (
+                <Link to={`/pay/${id}`}>
+                  <button
+                    className="bg-[#1dbf73] hover:bg-[#10b981] p-2.5 text-white font-medium
+        border-none text-[18px] cursor-pointer w-full"
+                  >
+                    Continue
+                  </button>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}

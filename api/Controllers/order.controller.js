@@ -4,7 +4,6 @@ import Gig from "../models/gig.model.js";
 import createError from "../utils/createError.js";
 import Stripe from "stripe";
 
-
 // create payment intent
 export const intent = async (req, res, next) => {
   const stripe = new Stripe(process.env.STRIPE);
@@ -14,6 +13,11 @@ export const intent = async (req, res, next) => {
     currency: "usd",
     automatic_payment_methods: { enabled: true },
   });
+
+  // user cannot pay for his own gig; cannot create order for it own gig
+  if (req.userId === gig.userId) {
+    return next(createError(400, "You cannot pay for your own gig"));
+  }
 
   const newOrder = new Order({
     gigId: gig._id,
@@ -26,7 +30,7 @@ export const intent = async (req, res, next) => {
   });
 
   await newOrder.save();
-  
+
   res.send({
     clientSecret: paymentIntent.client_secret,
   });
@@ -46,25 +50,20 @@ export const getOrders = async (req, res, next) => {
   }
 };
 
-
-// update order
+// confirm order:
 export const confirm = async (req, res, next) => {
   try {
-    const order = await Order.findById(req.params.id);
-    const gig = await Gig.findById(order.gigId);
-    if (req.user._id !== order.buyerId) {
-      return next(createError(403, "You can't update this order"));
-    }
-    if (order.isCompleted) {
-      return next(createError(403, "Order is already completed"));
-    }
-    await Order.findByIdAndUpdate(req.params.id, {
-      $set: { isCompleted: true },
-    });
-    await Gig.findByIdAndUpdate(order.gigId, {
-      $inc: { sales: 1 },
-    });
-    res.status(200).send("Order has been completed");
+    const orders = await Order.findOneAndUpdate(
+      {
+        payment_intent: req.body.payment_intent,
+      },
+      {
+        $set: {
+          isCompleted: true,
+        },
+      }
+    );
+    res.status(200).send("Order has been confirmed");
   } catch (err) {
     next(err);
   }
