@@ -127,7 +127,7 @@ const Gigs = () => {
             )}
           </div>
         </div>
-        <div className="cards flex justify-between flex-wrap ">
+        <div className="cards grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {isLoading ? (
             <div
               className={`h-full w-full max-w-xl mt-5 border-gray-300 shadow rounded-md p-4 mx-auto`}
