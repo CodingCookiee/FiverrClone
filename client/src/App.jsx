@@ -13,6 +13,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -29,6 +30,7 @@ const App = () => {
     return (
       <>
         <QueryClientProvider client={queryClient}>
+          <ScrollToTop />
           <Navbar />
           <Outlet />
           <Footer />
