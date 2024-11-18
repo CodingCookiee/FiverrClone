@@ -58,28 +58,43 @@ export default function CheckoutForm() {
         // Make sure to change this to your payment completion page
         return_url: "http://localhost:5173/success",
       },
-      });
-      if (error.type === "card_error" || error.type === "validation_error") {
-        setMessage(error.message);
-      } else {
-        setMessage("An unexpected error occurred.");
-      }
-      setIsLoading(false);
-    };
+    });
+    if (error.type === "card_error" || error.type === "validation_error") {
+      setMessage(error.message);
+    } else {
+      setMessage("An unexpected error occurred.");
+    }
+    setIsLoading(false);
+  };
+  
+      
 
-    const paymentElementOptions = {
+  const paymentElementOptions = {
     layout: "tabs",
   };
 
-
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form
+      id="payment-form"
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center justify-center h-full w-[500px]"
+    >
       <LinkAuthenticationElement
         id="link-authentication-element"
         onChange={(e) => setEmail(e.target.value)}
+        className="w-full max-w-lg rounded-md border-none"
       />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
+      <PaymentElement 
+      id="payment-element" 
+      options={paymentElementOptions}
+      className="w-full max-w-lg rounded-md border-none mb-5 mt-5"
+       />
+      <button
+        disabled={isLoading || !stripe || !elements}
+        id="submit"
+        className="p-4 pl-2.5 pr-2.5 bg-[#1dbf73] hover:bg-[#10b981]
+         text-white border-none font-medium rounded-md cursor-pointer  w-full"
+      >
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>

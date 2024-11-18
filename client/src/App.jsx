@@ -17,8 +17,10 @@ import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
+  Route,
+  Link,
 } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -81,14 +83,13 @@ const App = () => {
           element: <Register />,
         },
         {
-          path: "/pay",
+          path: "/pay/:id",
           element: <Pay />,
         },
         {
           path: "/success",
           element: <Success />,
         },
-       
       ],
     },
   ]);

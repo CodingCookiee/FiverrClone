@@ -4,7 +4,7 @@ import { Slider } from "infinite-react-carousel/lib";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useQuery } from "react-query";
 import newRequest from "../../utils/newRequest";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Reviews from "../../components/reviews/Reviews";
 
 // Custom arrow components
@@ -53,7 +53,6 @@ const Gig = () => {
       }),
     enabled: !!userId,
   });
- 
 
   return (
     <div className="gig flex justify-center">
@@ -233,12 +232,14 @@ const Gig = () => {
                 </div>
               ))}
             </div>
-            <button 
-            className="bg-[#1dbf73] p-2.5 text-white font-medium
+            <Link to={`/pay/${id}`}>
+              <button
+                className="bg-[#1dbf73] hover:bg-[#10b981] p-2.5 text-white font-medium
              border-none text-[18px] cursor-pointer"
-             >
-              Continue
-            </button>
+              >
+                Continue
+              </button>
+            </Link>
           </div>
         </div>
       )}
