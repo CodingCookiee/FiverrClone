@@ -1,11 +1,11 @@
 import "./featured.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Featured = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
-  const popularBtn =
+  const popularCat =
     "text-white bg border border-solid border-white rounded-3xl text-sm p-[5px] pl-2.5 pr-2.5 cursor pointer";
 
   const handleSubmit = (e) => {
@@ -51,30 +51,30 @@ const Featured = () => {
           </div>
           <div className="popular flex items-center gap-2.5 ">
             <span>Popular:</span>
-            <button
-              className={popularBtn}
-              onClick={() => handlePopularSearch("Graphics & Design")}
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Graphics & Design")}`}
+              className={popularCat}
             >
               Graphics & Design
-            </button>
-            <button
-              className={popularBtn}
-              onClick={() => handlePopularSearch("Voice Over")}
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Videos & Animation")}`}
+              className={popularCat}
             >
-              Voice Over
-            </button>
-            <button
-              className={popularBtn}
-              onClick={() => handlePopularSearch("Logo Design")}
+              Videos & Animation
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Music & Audio")}`}
+              className={popularCat}
             >
-              Logo Design
-            </button>
-            <button
-              className={popularBtn}
-              onClick={() => handlePopularSearch("SEO")}
+              Music & Audio
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Programming & Tech")}`}
+              className={popularCat}
             >
-              SEO
-            </button>
+              Programming & Tech
+            </Link>
           </div>
         </div>
         <div className="featured__right">

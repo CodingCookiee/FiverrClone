@@ -6,15 +6,17 @@ import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-const [active, setActive] = useState(false);
-const [open, setOpen] = useState(false);
-const [hideSellerButton, setHideSellerButton] = useState(false);
-const navigate = useNavigate();
-const { pathname } = useLocation();
+  const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [hideSellerButton, setHideSellerButton] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-// Update the joinBtnClass to use the active state instead of window.scrollY
-const joinBtnClass = ( pathname!=='/' || active === true)  ?  'text-black border-black' : 'text-white border-white'
-
+  // Update the joinBtnClass to use the active state instead of window.scrollY
+  const joinBtnClass =
+    pathname !== "/" || active === true
+      ? "text-black border-black"
+      : "text-white border-white";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +44,14 @@ const joinBtnClass = ( pathname!=='/' || active === true)  ?  'text-black border
 
   const handleSeller = async () => {
     try {
-      setHideSellerButton(true); 
+      setHideSellerButton(true);
       await newRequest.post("/users/:id", {
         isSeller: true,
       });
       navigate("/login");
     } catch (err) {
       console.log(err);
-      setHideSellerButton(false); 
+      setHideSellerButton(false);
     }
   };
 
@@ -88,24 +90,34 @@ const joinBtnClass = ( pathname!=='/' || active === true)  ?  'text-black border
               />
               <span className="text">{currentUser?.username}</span>
               {open && (
-                <div
-                  className="options absolute top-12 right-0 bg-white p-5 rounded-lg flex flex-col gap-2 border border-solid border-gray-300 text-slate-500 w-[250px]"
-                >
+                <div className="options absolute top-12 right-0 bg-white p-5 rounded-lg flex flex-col gap-2 border border-solid border-gray-300 text-slate-500 w-[250px]">
                   {currentUser?.isSeller && (
                     <div className="seller flex flex-col gap-2">
-                      <Link to="/mygigs" className="text">Gigs</Link>
-                      <Link to="/add" className="text">Add New Gig</Link>
+                      <Link to="/mygigs" className="text">
+                        Gigs
+                      </Link>
+                      <Link to="/add" className="text">
+                        Add New Gig
+                      </Link>
                     </div>
                   )}
-                  <Link to="/orders" className="text">Orders</Link>
-                  <Link to="/messages" className="text">Messages</Link>
-                  <Link className="text" onClick={handleLogout}>Log Out</Link>
+                  <Link to="/orders" className="text">
+                    Orders
+                  </Link>
+                  <Link to="/messages" className="text">
+                    Messages
+                  </Link>
+                  <Link className="text" onClick={handleLogout}>
+                    Log Out
+                  </Link>
                 </div>
               )}
             </div>
           ) : (
             <>
-              <Link to="/login" className="link">Sign in</Link>
+              <Link to="/login" className="link">
+                Sign in
+              </Link>
               <Link className="link" to="/register">
                 {!currentUser && (
                   <button
@@ -125,15 +137,60 @@ const joinBtnClass = ( pathname!=='/' || active === true)  ?  'text-black border
         <>
           <hr className="w-full h-0 border-[#ebebeb] border-solid" />
           <div className="menu flex justify-between w-[1400px] p-[10px] pl-0 pr-0 font-light text-[Montserrat] text-slate-400">
-            <Link to="/" className="link menuLink">Graphics & Design</Link>
-            <Link to="/" className="link">Videos & Animation</Link>
-            <Link to="/" className="link">Writing and Translation</Link>
-            <Link to="/" className="link">AI Services</Link>
-            <Link to="/" className="link">Digital Marketing</Link>
-            <Link to="/" className="link">Music & Audio</Link>
-            <Link to="/" className="link">Programming & Tech</Link>
-            <Link to="/" className="link">Business & Management</Link>
-            <Link to="/" className="link">Finance</Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Graphics & Design")}`}
+              className="link menuLink"
+            >
+              Graphics & Design
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Videos & Animation")}`}
+              className="link"
+            >
+              Videos & Animation
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Writing & Translation")}`}
+              className="link"
+            >
+              Writing & Translation
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("AI Services")}`}
+              className="link"
+            >
+              AI Services
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Digital Marketing")}`}
+              className="link"
+            >
+              Digital Marketing
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Music & Audio")}`}
+              className="link"
+            >
+              Music & Audio
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Programming & Tech")}`}
+              className="link"
+            >
+              Programming & Tech
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Business & Management")}`}
+              className="link"
+            >
+              Business & Management
+            </Link>
+            <Link
+              to={`/gigs?search=${encodeURIComponent("Finance")}`}
+              className="link"
+            >
+              Finance
+            </Link>
           </div>
         </>
       )}
