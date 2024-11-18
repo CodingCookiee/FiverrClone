@@ -1,12 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import newRequest  from "../../utils/newRequest";
+import getCurrentUser from "../../utils/getCurrentUser";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 
-function MyGigs() {
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
+const  MyGigs = () => {
+  const currentUser = getCurrentUser();
+  console.log(currentUser._id);
+  const queryClient = useQueryClient();
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["myGigs"],
+    queryFn: () =>
+      newRequest.get(`/gigs?userId=${currentUser._id}`).then((res) => {
+        return res.data;
+      }),
+  });
+  console.log(data);
+
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return newRequest.delete(`/gigs/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["myGigs"]);
+    },
+  });
+
+  const handleDelete = (id) => {
+    mutation.mutate(id);
   };
 
   return (
@@ -31,108 +54,31 @@ function MyGigs() {
             <th className="text-left">Sales</th>
             <th className="text-left">Action</th>
           </tr>
-          <tr className="h-[50px] bg-[#1dbf730f]">
+          {
+            data?.map((gig) => (
+            <tr className="h-[50px] bg-[#1dbf730f]" key={gig._id}>
             <td>
               <img
                 className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={gig.cover}
                 alt=""
               />
             </td>
-            <td>Stunning concept art</td>
+            <td>{gig.title}</td>
             <td>
-              59.<sup className="text-[12px]">99</sup>
+              {gig.price}
             </td>
-            <td>13</td>
+            <td>{gig.sales}</td>
             <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
+              <img 
+              src="/delete.png"
+               alt="" 
+               className="w-5 cursor-pointer"
+               onClick={() => handleDelete(gig._id)
+               }
+                />
             </td>
-          </tr>
-          <tr className="h-[50px]">
-            <td>
-              <img
-                className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>
-              120.<sup>99</sup>
-            </td>
-            <td>41</td>
-            <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
-            </td>
-          </tr>
-          <tr className="h-[50px]  bg-[#1dbf730f]">
-            <td>
-              <img
-                className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>
-              79.<sup>99</sup>
-            </td>
-            <td>55</td>
-            <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
-            </td>
-          </tr>
-          <tr className="h-[50px]">
-            <td>
-              <img
-                className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>
-              119.<sup>99</sup>
-            </td>
-            <td>29</td>
-            <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
-            </td>
-          </tr>
-          <tr className="h-[50px]  bg-[#1dbf730f]">
-            <td>
-              <img
-                className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>
-              59.<sup>99</sup>
-            </td>
-            <td>34</td>
-            <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
-            </td>
-          </tr>
-          <tr className="h-[50px]">
-            <td>
-              <img
-                className="image w-[50px] h-[25px] object-cover"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>
-              110.<sup>99</sup>
-            </td>
-            <td>16</td>
-            <td>
-              <img src="/delete.png" alt="" className="w-5 cursor-pointer" />
-            </td>
-          </tr>
+          </tr>))}
         </table>
       </div>
     </div>

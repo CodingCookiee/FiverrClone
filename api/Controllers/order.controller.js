@@ -40,7 +40,7 @@ export const getOrders = async (req, res, next) => {
         { buyerId: req.userId }
       ],
       isCompleted: true
-    });
+    }).sort({ createdAt: -1 });
 
     res.status(200).send(orders);
   } catch (err) {
