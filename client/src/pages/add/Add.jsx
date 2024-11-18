@@ -242,18 +242,22 @@ const Add = () => {
               </button>
             </form>
             <div className="addedFeatures flex flex-wrap gap-2.5">
-              {state.features.map((f, index) => (
+              {state.features.map((feature, index) => (
                 <div
                   className="p-2 flex justify-between items-center gap-2.5"
-                  key={index}
+                  key={`feature-${index}`}
                 >
-                  {f}
+                  {feature}
                   <button
-                    className="self-start flex items-center justify-center bg-[#1dbf73]
+                    className="removeAddedFeature self-start flex items-center justify-center bg-[#1dbf73]
           text-white rounded-full w-[20px] h-[20px] pb-[5px] cursor-pointer mb-3"
-                    onClick={() =>
-                      dispatch({ type: "REMOVE_FEATURE", payload: f })
-                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch({
+                        type: "REMOVE_FEATURE",
+                        payload: index,
+                      });
+                    }}
                   >
                     x
                   </button>

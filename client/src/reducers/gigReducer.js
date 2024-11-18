@@ -31,12 +31,10 @@ export const INITIAL_STATE = {
           ...state,
           features: [...state.features, action.payload],
         };
-      case "REMOVE_FEATURE":
-        return {
-          ...state,
-          features: state.features.filter(
-            (feature) => feature !== action.payload
-          ),
+        case "REMOVE_FEATURE":
+            return {
+              ...state,
+              features: state.features.filter((_, index) => index !== action.payload),
         };
       default:
         return state;
