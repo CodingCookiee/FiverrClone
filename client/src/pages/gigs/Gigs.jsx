@@ -61,12 +61,10 @@ const Gigs = () => {
     refetch();
   };
 
+
   return (
     <div className="gigs w-full flex justify-center">
-      <div
-        className="container w-[1400px] p-[30px] pl-0 pr-0 flex
-         flex-col gap-[15px]"
-      >
+        <div className="container w-[1400px] p-[30px] pl-0 pr-0 flex flex-col gap-[15px]">
         <span className="breadcrumbs font-light text-[13px] text-[#555] text-uppercase">
           <Link to="/">Fiverr</Link> {" > "}
           {searchTerm ? decodeURIComponent(searchTerm) : "Gigs"} {" > "}
@@ -128,29 +126,34 @@ const Gigs = () => {
           </div>
         </div>
         <div className="cards grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {isLoading ? (
-            <div
-              className={`h-full w-full max-w-xl mt-5 border-gray-300 shadow rounded-md p-4 mx-auto`}
-            >
-              <div className="animate-pulse flex space-x-4">
-                <div className={`rounded-full  `}></div>
-                <div className="flex-1 space-y-4">
-                  {[...Array(10)].map((_, i) => (
-                    <div key={i} className="space-y-3">
-                      <div
-                        className={`h-2 mt-10 mb-10 bg-slate-300 rounded w-3/4`}
-                      ></div>
-                      <div className={`h-2 bg-slate-300 rounded w-1/2`}></div>
-                    </div>
-                  ))}
+        {isLoading ? (
+        <div
+          className={`h-full w-full max-w-xl mt-5 border-gray-300 shadow rounded-md p-4 mx-auto`}
+        >
+          <div className="animate-pulse flex space-x-4">
+            <div className={`rounded-full  `}></div>
+            <div className="flex-1 space-y-4">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="space-y-3">
+                  <div
+                    className={`h-2 mt-10 mb-10 bg-slate-300 rounded w-3/4`}
+                  ></div>
+                  <div className={`h-2 bg-slate-300 rounded w-1/2`}></div>
                 </div>
-              </div>
+              ))}
             </div>
-          ) : error ? (
-            "Something went wrong!"
-          ) : (
-            data.map((gig) => <GigCard key={gig._id} item={gig} />)
-          )}
+          </div>
+        </div>
+    
+  ) : error ? (
+    <div className="flex justify-center items-center h-screen">
+        <div className="text-xl text-red-500">
+          Something went wrong! Please try again later.
+        </div>
+      </div>
+  ) : (
+    data?.map((gig) => <GigCard key={gig._id} item={gig} />)
+  )}
         </div>
       </div>
     </div>
