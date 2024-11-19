@@ -22,7 +22,7 @@ import {
   Link,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -31,6 +31,7 @@ const App = () => {
     return (
       <>
         <QueryClientProvider client={queryClient}>
+          <SpeedInsights />
           <ScrollToTop />
           <Navbar />
           <Outlet />
