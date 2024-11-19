@@ -255,8 +255,18 @@ const Gig = () => {
                 </div>
               ))}
             </div>
+
             <div className="btn">
-              {currentUser._id === gigData?.userId ? (
+              {!currentUser ? (
+                <Link to="/login">
+                  <button
+                    className="bg-[#1dbf73] hover:bg-[#10b981] p-2.5 text-white font-medium
+        border-none text-[18px] cursor-pointer w-full"
+                  >
+                    Login to Purchase
+                  </button>
+                </Link>
+              ) : currentUser._id === gigData?.userId ? (
                 <button
                   className="bg-gray-400 p-2.5 text-white font-medium
       border-none text-[18px] cursor-not-allowed w-full"
