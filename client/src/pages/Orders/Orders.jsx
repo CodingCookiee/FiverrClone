@@ -1,6 +1,6 @@
 import React from "react";
 import "./Orders.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useQuery} from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
@@ -16,8 +16,6 @@ const MyOrders = () => {
         return res.data;
       }),
   });
-  
-  console.log(data);
 
   const handleContact = async (order) => {
     const sellerId = order.sellerId;
@@ -77,13 +75,15 @@ const MyOrders = () => {
               {data.map((order) => (
                 <tr className="h-[50px] bg-[#1dbf730f]" key={order._id}>
                   <td>
+                  <Link to={`/gig/${order.gigId}`} className="cursor-pointer">
                     <img
                       className="image w-[50px] h-[25px] object-cover"
                       src={order.img || "/order.png"}
                       alt=""
                     />
+                    </Link>
                   </td>
-                  <td>{order.title}</td>
+                  <td><Link to={`/gig/${order.gigId}`} className="cursor-pointer">{order.title}</Link></td>
                   <td>${order.price}</td>
                   <td>
                     <img

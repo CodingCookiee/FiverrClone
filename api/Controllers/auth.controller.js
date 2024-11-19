@@ -33,9 +33,13 @@ export const login = async (req, res, next) => {
     const { email, password, username } = req.body;
 
     // Check for all required fields
-    if (!password || (!email && !username)) {
+    if(!password){
+      return next(createError(400, "Please provide password"))
+    }
+    else if (!password || (!email && !username)) {
       return next(createError(400, "Please provide either email or username with password"))
     }
+    
 
     // Login using email or username
     let user;

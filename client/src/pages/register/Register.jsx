@@ -42,7 +42,16 @@ const Register = () => {
       });
       navigate("/login");
     } catch (err) {
-      setError(err.response.data);
+      // Transform error messages into user-friendly format
+      if (err.response.data.includes("E11000 duplicate key error")) {
+        if (err.response.data.includes("username")) {
+          setError("Username is already taken. Please choose another one.");
+        } else if (err.response.data.includes("email")) {
+          setError("Email is already registered. Please use another email.");
+        } 
+      } else {
+        setError(err.response.data);
+      }
     }
   };
 
