@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 const Add = () => {
   const [singleFile, setSingleFile] = useState(undefined);
   const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [state, dispatch] = React.useReducer(gigReducer, INITIAL_STATE);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -70,8 +72,34 @@ const Add = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validation checks
+    const newErrors = {};
+    if (!state.title) newErrors.title = "Title is required";
+    if (!state.desc) newErrors.desc = "Description is required";
+    if (!state.cat) newErrors.cat = "Category is required";
+    if (!state.price) newErrors.price = "Price is required";
+    if (!state.cover) newErrors.cover = "Cover image is required";
+    if (!state.shortTitle) newErrors.shortTitle = "Service title is required";
+    if (!state.shortDesc) newErrors.shortDesc = "Short description is required";
+    if (!state.deliveryTime)
+      newErrors.deliveryTime = "Delivery time is required";
+    if (!state.revisionNumber)
+      newErrors.revisionNumber = "Revision number is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     mutation.mutate(state);
     navigate("/mygigs");
+  };
+
+  const handleFilesChange = (e) => {
+    const selectedFiles = e.target.files;
+    setFiles(selectedFiles);
+    setFileNames(Array.from(selectedFiles).map((file) => file.name));
   };
 
   return (
@@ -83,7 +111,7 @@ const Add = () => {
         <div className="sections flex justify-between gap-24">
           <div className="info flex-1 flex flex-col gap-2.5 justify-between">
             <label htmlFor="title" className="text-[gray] text-[18px]">
-              Title
+              Title<span className="text-[red]">*</span>
             </label>
             <input
               className="p-5 border border-solid border-[lightgrey] rounded-md
@@ -94,6 +122,7 @@ const Add = () => {
               placeholder="e.g. I will do something I'm really good at"
               onChange={handleChange}
             />
+            {errors.title && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.title}</span>}
             <label htmlFor="cats" className="text-[gray] text-[18px]">
               Category
             </label>
@@ -104,25 +133,43 @@ const Add = () => {
               className="p-5  border-solid  block w-full px-4 py-2 pr-8 text-gray-700 bg-white border border-gray-300 rounded-md 
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
             >
-              <option className="text-base font-light" value='Graphics & Design'>
+              <option
+                className="text-base font-light"
+                value="Graphics & Design"
+              >
                 Graphics & Design
               </option>
-              <option className="text-base font-light" value="Digital Marketing">
+              <option
+                className="text-base font-light"
+                value="Digital Marketing"
+              >
                 Digital Marketing
               </option>
-              <option className="text-base font-light" value="Writing & Translation">
+              <option
+                className="text-base font-light"
+                value="Writing & Translation"
+              >
                 Writing & Translation
               </option>
-              <option className="text-base font-light" value="Video & Animation">
+              <option
+                className="text-base font-light"
+                value="Video & Animation"
+              >
                 Video & Animation
               </option>
               <option className="text-base font-light" value="Music & Audio">
                 Music & Audio
               </option>
-              <option className="text-base font-light" value="Programming & Tech">
+              <option
+                className="text-base font-light"
+                value="Programming & Tech"
+              >
                 Programming & Tech
               </option>
-              <option className="text-base font-light" value="Business & Management">
+              <option
+                className="text-base font-light"
+                value="Business & Management"
+              >
                 Business & Management
               </option>
               <option className="text-base font-light" value="Finance">
@@ -143,6 +190,7 @@ const Add = () => {
                   id="cover"
                   onChange={(e) => setSingleFile(e.target.files[0])}
                 />
+                {errors.cover && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.cover}</span>}
                 <label htmlFor="img" className="text-[gray] text-[18px]">
                   Upload Images
                 </label>
@@ -151,8 +199,15 @@ const Add = () => {
                   type="file"
                   id="img"
                   multiple
-                  onChange={(e) => setFiles(e.target.files)}
+                  onChange={handleFilesChange}
                 />
+                <div className="selected-files mt-2">
+                  {fileNames.map((name, index) => (
+                    <div key={index} className="text-sm text-gray-600">
+                      {name}
+                    </div>
+                  ))}
+                </div>
               </div>
               <button
                 onClick={handleUpload}
@@ -166,7 +221,7 @@ const Add = () => {
               Description
             </label>
             <textarea
-            name="desc"
+              name="desc"
               id="desc"
               placeholder="Brief descriptions to introduce your service to customers"
               cols="0"
@@ -175,6 +230,7 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               onChange={handleChange}
             ></textarea>
+            {errors.desc && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.desc}</span>}
             <button
               className="border-none p-5 text-white font-medium bg-[#1dbf73] 
               text-[18px] cursor-pointer rounded-md hover:bg-[#10b981]"
@@ -288,6 +344,7 @@ const Add = () => {
               name="price"
               onChange={handleChange}
             />
+            {errors.price && <span className="text-[#ef4444] text-sm block mt-0  ">{errors.price}</span>}
           </div>
         </div>
       </div>
