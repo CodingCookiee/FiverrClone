@@ -85,15 +85,15 @@ export const login = async (req, res, next) => {
 // Logout a user
 export const logout = (req, res, next) => {
   try {
-    res
-    .clearCookie("accessToken", {
-      sameSite: "none",
+    res.clearCookie("accessToken", {
+      httpOnly: true,
       secure: true,
+      sameSite: "none",
+      path: '/',
     })
     .status(200)
     .json("User has been logged out.");
   } catch (err) {
-    console.error("Logout error:", err);
     next(err);
   }
 };
