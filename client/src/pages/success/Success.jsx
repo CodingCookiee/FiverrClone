@@ -1,5 +1,5 @@
 import newRequest from "../../utils/newRequest";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const Success = () => {

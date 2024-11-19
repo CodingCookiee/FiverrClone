@@ -1,7 +1,7 @@
 import React from "react";
 import "./Orders.css";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery} from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 const MyOrders = () => {

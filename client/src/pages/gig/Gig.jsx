@@ -1,13 +1,14 @@
 import "./gig.css";
 import React from "react";
-import { Slider } from "infinite-react-carousel/lib";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useParams, Link } from "react-router-dom";
 import Reviews from "../../components/reviews/Reviews";
 
-// Custom arrow components
 const PrevArrow = ({ onClick }) => (
   <button onClick={onClick} className="custom-prev-arrow">
     <FaArrowLeft />
@@ -23,37 +24,51 @@ const NextArrow = ({ onClick }) => (
 const Gig = () => {
   const { id } = useParams();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const settings = {
-    slidesToShow: 1,
-    infinite: true,
-    duration: 500,
-    arrows: true,
-    arrowsScroll: 1,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-  };
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["gig"],
-    queryFn: () =>
-      newRequest.get(`/gigs/single/${id}`).then((res) => {
-        return res.data;
-      }),
+  const {
+    isLoading,
+    error,
+    data: gigData,
+  } = useQuery({
+    queryKey: ["gig", id],
+    queryFn: () => newRequest.get(`/gigs/single/${id}`).then((res) => res.data),
   });
 
-  const userId = data?.userId;
   const {
     isLoading: userLoading,
     error: userError,
     data: userData,
   } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["user", gigData?.userId],
     queryFn: () =>
-      newRequest.get(`/users/${userId}`).then((res) => {
-        return res.data;
-      }),
-    enabled: !!userId,
+      newRequest.get(`/users/${gigData?.userId}`).then((res) => res.data),
+    enabled: !!gigData?.userId,
   });
+
+  const settings = {
+    dots: true,
+    infinite: gigData?.images?.length > 1,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+    adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="gig flex justify-center">
@@ -79,11 +94,11 @@ const Gig = () => {
         <div>Something went wrong!</div>
       ) : (
         <div className="container w-[1400px] flex gap-[50px] p-[30px] pl-0 pr-0">
-          <div className="left flex-[2] flex flex-col gap-5">
+          <div className="left flex-[2] flex flex-col gap-5 overflow-hidden">
             <span className="breadcrumbs font-light text-uppercase text-[13px] text-[#555]">
-              <Link to="/gigs">Gigs</Link> {">"} {data?.cat} {">"}
+              <Link to="/gigs">Gigs</Link> {">"} {gigData?.cat} {">"}
             </span>
-            <h1 className="font-bold text-2xl">{data?.title}</h1>
+            <h1 className="font-bold text-2xl">{gigData?.title}</h1>
             {userLoading ? (
               <div className="user flex items-center gap-2.5">Loading...</div>
             ) : userError ? (
@@ -100,9 +115,9 @@ const Gig = () => {
                 <span className="font-medium text-sm">
                   {userData?.username || "Unknown User"}
                 </span>
-                {!isNaN(data.totalStars / data.starNumber) && (
+                {!isNaN(gigData.totalStars / gigData.starNumber) && (
                   <div className="stars flex items-center gap-0.5">
-                    {Array(Math.round(data.totalStars / data.starNumber))
+                    {Array(Math.round(gigData.totalStars / gigData.starNumber))
                       .fill()
                       .map((item, i) => (
                         <img
@@ -114,24 +129,27 @@ const Gig = () => {
                       ))}
 
                     <span className="text-md font-bold text-[#bdbcbc]">
-                      {Math.round(data.totalStars / data.starNumber)}
+                      {Math.round(gigData.totalStars / gigData.starNumber)}
                     </span>
                   </div>
                 )}
               </div>
             )}
-            <Slider {...settings} className="slider ">
-              {data?.images.map((image, index) => (
-                <img
-                  src={image}
-                  key={index}
-                  alt=""
-                  className="max-h-[500px] object-contain"
-                />
-              ))}
-            </Slider>
+            <div className="slider-container w-full max-w-full overflow-hidden relative">
+              <Slider {...settings} className="slider w-full">
+                {gigData?.images.map((image, index) => (
+                  <div key={index}>
+                    <img
+                      src={image}
+                      alt=""
+                      className="slide-image w-full object-contain h-[500px]"
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
             <h2 className="font-normal">About This Gig</h2>
-            <p className="font-light text-[#555] leading-6	">{data?.desc}</p>
+            <p className="font-light text-[#555] leading-6	">{gigData?.desc}</p>
             {userLoading ? (
               <div className="user flex items-center gap-2.5">Loading...</div>
             ) : userError ? (
@@ -151,9 +169,11 @@ const Gig = () => {
                   />
                   <div className="info flex flex-col gap-2.5">
                     <span>{userData?.username || "Unknown User"}</span>
-                    {!isNaN(data.totalStars / data.starNumber) && (
+                    {!isNaN(gigData.totalStars / gigData.starNumber) && (
                       <div className="stars flex items-center gap-0.5">
-                        {Array(Math.round(data.totalStars / data.starNumber))
+                        {Array(
+                          Math.round(gigData.totalStars / gigData.starNumber)
+                        )
                           .fill()
                           .map((item, i) => (
                             <img
@@ -165,7 +185,7 @@ const Gig = () => {
                           ))}
 
                         <span className="text-md font-bold text-[#bdbcbc]">
-                          {Math.round(data.totalStars / data.starNumber)}
+                          {Math.round(gigData.totalStars / gigData.starNumber)}
                         </span>
                       </div>
                     )}
@@ -208,22 +228,24 @@ const Gig = () => {
           </div>
           <div className="right flex-1 border border-solid border-[#e9e8e8] p-5 flex flex-col gap-5 h-max max-h-[500px] sticky top-[150px]">
             <div className="price flex items-center justify-between">
-              <h3 className="font-medium">{data?.shortTitle}</h3>
-              <h2 className="font-light">$ {data?.price}</h2>
+              <h3 className="font-medium">{gigData?.shortTitle}</h3>
+              <h2 className="font-light">$ {gigData?.price}</h2>
             </div>
-            <p className="text-[gray] m-[10px] ml-0 mr-0">{data?.shortDesc}</p>
+            <p className="text-[gray] m-[10px] ml-0 mr-0">
+              {gigData?.shortDesc}
+            </p>
             <div className="details flex items-center justify-between text-sm">
               <div className="item flex items-center gap-2.5">
                 <img src="/clock.png" alt="" className="w-5" />
-                <span>{data?.deliveryTime} Days Delivery</span>
+                <span>{gigData?.deliveryTime} Days Delivery</span>
               </div>
               <div className="item flex items-center gap-2.5 ">
                 <img src="/recycle.png" alt="" className="w-5" />
-                <span>{data?.revisionNumber} Revisions</span>
+                <span>{gigData?.revisionNumber} Revisions</span>
               </div>
             </div>
             <div className="features ">
-              {data?.features.map((feature, index) => (
+              {gigData?.features.map((feature, index) => (
                 <div
                   key={index}
                   className="item flex items-center gap-2.5 mb-[5px] font-light text-[gray]"
@@ -234,7 +256,7 @@ const Gig = () => {
               ))}
             </div>
             <div className="btn">
-              {currentUser._id === data?.userId ? (
+              {currentUser._id === gigData?.userId ? (
                 <button
                   className="bg-gray-400 p-2.5 text-white font-medium
       border-none text-[18px] cursor-not-allowed w-full"
@@ -259,5 +281,4 @@ const Gig = () => {
     </div>
   );
 };
-
 export default Gig;

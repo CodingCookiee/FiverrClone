@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 const Message = () => {

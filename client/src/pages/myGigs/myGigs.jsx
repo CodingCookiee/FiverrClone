@@ -2,13 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import getCurrentUser from "../../utils/getCurrentUser";
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+
 
 const MyGigs = () => {
   const currentUser = getCurrentUser();
   const queryClient = useQueryClient();
 
-  const { isLoading, error, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ["myGigs"],
     queryFn: () =>
       newRequest.get(`/gigs?userId=${currentUser._id}`).then((res) => {

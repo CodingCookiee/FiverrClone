@@ -1,7 +1,7 @@
 import React from "react";
 import GigCard from "../../components/gigCard/GigCard.jsx";
 import { useRef, useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest.js";
 import { useLocation, Link } from "react-router-dom";
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import moment from "moment";
 
 function Messages() {

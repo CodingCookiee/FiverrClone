@@ -21,11 +21,12 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
 
 const App = () => {
+  const queryClient = new QueryClient();
+
   const Layout = () => {
     return (
       <>

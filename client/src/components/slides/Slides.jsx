@@ -1,10 +1,11 @@
 import './slides.css';
 import React from "react";
-import { Slider } from "infinite-react-carousel/lib";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; 
-import ProjectCard from "../projectCard/ProjectCardTemp.jsx"; // Import ProjectCard
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import ProjectCard from "../projectCard/ProjectCardTemp.jsx";
 
-// Custom arrow components
 const PrevArrow = ({ onClick }) => (
   <button onClick={onClick} className="prev-arrow">
     <FaArrowLeft />
@@ -18,26 +19,38 @@ const NextArrow = ({ onClick, isProjectSlide }) => (
 );
 
 const Slide = ({ children, slidesToShow }) => {
-  // Check if any child is a ProjectCard
-  const isProjectSlide = React.Children.toArray(children).some(child => child.type === ProjectCard);
+  const childrenArray = React.Children.toArray(children);
+  const isProjectSlide = childrenArray.some(child => child.type === ProjectCard);
 
   const settings = {
-    slidesToShow: slidesToShow,
-    arrowsScroll: 3,
     dots: true,
-    infinite: true,
+    infinite: childrenArray.length > slidesToShow,
     speed: 500,
-    swipeToSlide: true,
-    arrows: true,
+    slidesToShow: Math.min(slidesToShow, childrenArray.length),
+    slidesToScroll: 1,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow isProjectSlide={isProjectSlide} />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: Math.min(3, childrenArray.length),
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: Math.min(2, childrenArray.length),
+        }
+      }
+    ]
   };
 
   return (
     <div className="slide flex justify-center p-[100px] pl-0 pr-0">
       <div className="container w-[1400px]">
         <Slider {...settings}>
-          {children}
+          {childrenArray}
         </Slider>
       </div>
     </div>

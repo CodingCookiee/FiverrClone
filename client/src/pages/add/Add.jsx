@@ -2,7 +2,7 @@ import "./add.css";
 import React, { useState } from "react";
 import { gigReducer, INITIAL_STATE } from "../../reducers/gigReducer";
 import upload from "../../utils/upload";
-import { useMutation, useQueryClient } from "react-query";
+import {useQueryClient, useMutation } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 
@@ -95,9 +95,23 @@ const Add = () => {
   };
 
   const handleFilesChange = (e) => {
-    const selectedFiles = e.target.files;
-    setFiles(selectedFiles);
-    setFileNames(Array.from(selectedFiles).map((file) => file.name));
+    const selectedFiles = Array.from(e.target.files);
+    setFiles((prevFiles) => {
+      const newFiles = [...(prevFiles || []), ...selectedFiles];
+      return newFiles;
+    });
+    setFileNames((prevNames) => {
+      const newNames = [
+        ...prevNames,
+        ...selectedFiles.map((file) => file.name),
+      ];
+      return newNames;
+    });
+  };
+
+  const clearFiles = () => {
+    setFiles([]);
+    setFileNames([]);
   };
 
   return (
@@ -120,7 +134,11 @@ const Add = () => {
               placeholder="e.g. I will do something I'm really good at"
               onChange={handleChange}
             />
-            {errors.title && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.title}</span>}
+            {errors.title && (
+              <span className="text-[#ef4444] text-sm block mt-0 ">
+                {errors.title}
+              </span>
+            )}
             <label htmlFor="cats" className="text-[gray] text-[18px]">
               Category<span className="text-[red]">*</span>
             </label>
@@ -188,7 +206,11 @@ const Add = () => {
                   id="cover"
                   onChange={(e) => setSingleFile(e.target.files[0])}
                 />
-                {errors.cover && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.cover}</span>}
+                {errors.cover && (
+                  <span className="text-[#ef4444] text-sm block mt-0 ">
+                    {errors.cover}
+                  </span>
+                )}
                 <label htmlFor="img" className="text-[gray] text-[18px]">
                   Upload Images
                 </label>
@@ -200,11 +222,27 @@ const Add = () => {
                   onChange={handleFilesChange}
                 />
                 <div className="selected-files mt-2">
-                  {fileNames.map((name, index) => (
-                    <div key={index} className="text-sm text-gray-600">
-                      {name}
+                  {fileNames.length > 0 && (
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-gray-700">Selected Files:</span>
+                      <button
+                        onClick={clearFiles}
+                        className="text-sm text-red-500 hover:text-red-700"
+                      >
+                        Clear all
+                      </button>
                     </div>
-                  ))}
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {fileNames.map((name, index) => (
+                      <div
+                        key={index}
+                        className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full"
+                      >
+                        {name}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <button
@@ -228,7 +266,11 @@ const Add = () => {
               shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
               onChange={handleChange}
             ></textarea>
-            {errors.desc && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.desc}</span>}
+            {errors.desc && (
+              <span className="text-[#ef4444] text-sm block mt-0 ">
+                {errors.desc}
+              </span>
+            )}
             <button
               className="border-none p-5 text-white font-medium bg-[#1dbf73] 
               text-[18px] cursor-pointer rounded-md hover:bg-[#10b981]"
@@ -274,7 +316,11 @@ const Add = () => {
               name="deliveryTime"
               onChange={handleChange}
             />
-             {errors.deliveryTime && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.deliveryTime}</span>}
+            {errors.deliveryTime && (
+              <span className="text-[#ef4444] text-sm block mt-0 ">
+                {errors.deliveryTime}
+              </span>
+            )}
             <label htmlFor="rev" className="text-[gray] text-[18px]">
               Revision Number<span className="text-[red]">*</span>
             </label>{" "}
@@ -286,7 +332,11 @@ const Add = () => {
               name="revisionNumber"
               onChange={handleChange}
             />
-             {errors.revisionNumber && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.revisionNumber}</span>}
+            {errors.revisionNumber && (
+              <span className="text-[#ef4444] text-sm block mt-0 ">
+                {errors.revisionNumber}
+              </span>
+            )}
             <label htmlFor="features" className="text-[gray] text-[18px]">
               Add Features
             </label>{" "}
@@ -344,7 +394,11 @@ const Add = () => {
               name="price"
               onChange={handleChange}
             />
-            {errors.price && <span className="text-[#ef4444] text-sm block mt-0  ">{errors.price}</span>}
+            {errors.price && (
+              <span className="text-[#ef4444] text-sm block mt-0  ">
+                {errors.price}
+              </span>
+            )}
           </div>
         </div>
       </div>
