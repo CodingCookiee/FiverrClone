@@ -67,10 +67,14 @@ export const login = async (req, res, next) => {
 
     const { password: userPassword, ...rest } = user._doc;
 
-    res
-      .cookie("accessToken", token, { httpOnly: true })
-      .status(200)
-      .json({ message: "Logged in successfully", ...rest });
+  res.cookie("accessToken", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  path: '/',
+}).status(200).json({ message: "Logged in successfully", ...rest });
+
+
       
   } catch (err) {
     console.error("Login error:", err);
