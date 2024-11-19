@@ -80,8 +80,6 @@ const Add = () => {
     if (!state.cat) newErrors.cat = "Category is required";
     if (!state.price) newErrors.price = "Price is required";
     if (!state.cover) newErrors.cover = "Cover image is required";
-    if (!state.shortTitle) newErrors.shortTitle = "Service title is required";
-    if (!state.shortDesc) newErrors.shortDesc = "Short description is required";
     if (!state.deliveryTime)
       newErrors.deliveryTime = "Delivery time is required";
     if (!state.revisionNumber)
@@ -124,7 +122,7 @@ const Add = () => {
             />
             {errors.title && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.title}</span>}
             <label htmlFor="cats" className="text-[gray] text-[18px]">
-              Category
+              Category<span className="text-[red]">*</span>
             </label>
             <select
               onChange={handleChange}
@@ -182,7 +180,7 @@ const Add = () => {
             <div className="images flex flex-col gap-2.5">
               <div className="imagesInputs flex flex-col gap-2.5 border border-solid border-[lightgrey] rounded-md p-2">
                 <label htmlFor="cover" className="text-[gray] text-[18px]">
-                  Cover Image
+                  Cover Image<span className="text-[red]">*</span>
                 </label>
                 <input
                   className="p-5 "
@@ -218,7 +216,7 @@ const Add = () => {
               </button>
             </div>
             <label htmlFor="desc" className="text-[gray] text-[18px]">
-              Description
+              Description<span className="text-[red]">*</span>
             </label>
             <textarea
               name="desc"
@@ -266,7 +264,7 @@ const Add = () => {
               onChange={handleChange}
             ></textarea>
             <label htmlFor="delivery" className="text-[gray] text-[18px]">
-              Delivery Time (e.g. 3 days)
+              Delivery Time<span className="text-[red]">*</span> (e.g. 3 days)
             </label>{" "}
             <input
               className="p-5 border border-solid border-[lightgrey] rounded-md
@@ -276,8 +274,9 @@ const Add = () => {
               name="deliveryTime"
               onChange={handleChange}
             />
+             {errors.deliveryTime && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.deliveryTime}</span>}
             <label htmlFor="rev" className="text-[gray] text-[18px]">
-              Revision Number
+              Revision Number<span className="text-[red]">*</span>
             </label>{" "}
             <input
               className="p-5 border border-solid border-[lightgrey] rounded-md
@@ -287,6 +286,7 @@ const Add = () => {
               name="revisionNumber"
               onChange={handleChange}
             />
+             {errors.revisionNumber && <span className="text-[#ef4444] text-sm block mt-0 ">{errors.revisionNumber}</span>}
             <label htmlFor="features" className="text-[gray] text-[18px]">
               Add Features
             </label>{" "}
@@ -334,7 +334,7 @@ const Add = () => {
               ))}
             </div>
             <label htmlFor="price" className="text-[gray] text-[18px]">
-              Price
+              Price<span className="text-[red]">*</span>
             </label>{" "}
             <input
               className="p-5 border border-solid border-[lightgrey] rounded-md
