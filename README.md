@@ -1,13 +1,18 @@
-# FiverrUI
+# FiverServices
 
 
 
 
-## [🔗LiveDemo](https://fiverruii.netlify.app) 
+## [🔗LiveDemo](https://fiverrservices.vercel.app) 
 
 
 ![App Screenshot](./client/public/app.png)
 
 
 ## Powered By
- - React and Tailwind CSS
+ - MERN Stack
+ - Tailwind
+ - Stripe
+ - RESTful API
+   
+   
