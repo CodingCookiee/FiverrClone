@@ -56,7 +56,7 @@ export default function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `https://fiverrservices.vercel.app/success?email=${email}`,
+        return_url: `http://localhost:5173/success?email=${email}`,
       },
     });
 
