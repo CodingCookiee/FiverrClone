@@ -13,7 +13,7 @@ export default function CheckoutForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+ 
   useEffect(() => {
     if (!stripe) {
       return;
@@ -50,15 +50,16 @@ export default function CheckoutForm() {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
+
     setIsLoading(true);
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "https://fiverrservices.vercel.app/success",
+        return_url: `https://fiverrservices.vercel.app/success?email=${email}`,
       },
     });
-    
+
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);
     } else {
@@ -66,12 +67,16 @@ export default function CheckoutForm() {
     }
     setIsLoading(false);
   };
-  
-      
-
   const paymentElementOptions = {
     layout: "tabs",
   };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.value.email);
+  };
+  
+
+  
 
   return (
     <form
@@ -80,15 +85,16 @@ export default function CheckoutForm() {
       className="flex flex-col items-center justify-center h-full w-[500px]"
     >
       <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full max-w-lg rounded-md border-none"
+      id="link-authentication-element"
+      onChange={handleEmailChange}
+      className="w-full max-w-lg rounded-md border-none"
+    />
+
+      <PaymentElement
+        id="payment-element"
+        options={paymentElementOptions}
+        className="w-full max-w-lg rounded-md border-none mb-5 mt-5"
       />
-      <PaymentElement 
-      id="payment-element" 
-      options={paymentElementOptions}
-      className="w-full max-w-lg rounded-md border-none mb-5 mt-5"
-       />
       <button
         disabled={isLoading || !stripe || !elements}
         id="submit"
