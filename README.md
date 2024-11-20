@@ -13,6 +13,7 @@
  - MERN Stack
  - Tailwind
  - Stripe
+ - Jwt
  - RESTful API
    
    
