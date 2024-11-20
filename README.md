@@ -6,7 +6,7 @@
 ## [🔗LiveDemo](https://fiverrservices.vercel.app) 
 
 
-![App Screenshot]('./client/public/app.png')
+![App Screenshot](./client/public/app.png)
 
 
 ## Powered By
