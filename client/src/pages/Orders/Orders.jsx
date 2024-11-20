@@ -20,6 +20,12 @@ const MyOrders = () => {
   const handleContact = async (order) => {
     const sellerId = order.sellerId;
     const buyerId = order.buyerId;
+    
+    // Prevent self-conversation
+    if (sellerId === buyerId) {
+      return;
+    }
+    
     const id = sellerId + buyerId;
     try {
       const res = await newRequest.get(`/conversations/single/${id}`);
@@ -28,7 +34,7 @@ const MyOrders = () => {
       if (err.response.status === 404) {
         try {
           const res = await newRequest.post(`/conversations`, {
-            to: currentUser.isSeller ? buyerId : sellerId,
+            to: currentUser.seller ? buyerId : sellerId,
           });
           navigate(`/message/${res.data.id}`);
         } catch (err) {
@@ -36,7 +42,8 @@ const MyOrders = () => {
         }
       }
     }
-  }
+  };
+  
 
     return (
       <div className="orders flex justify-center text-[#555]">
