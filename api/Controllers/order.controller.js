@@ -98,20 +98,25 @@ export const sendInvoice = async (req, res, next) => {
       to: email,
       subject: `Your Invoice for Order #${orderId}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #1dbf73;">Thank You for Your Purchase!</h1>
-          </div>
-          
-          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
-            <h2>Order Details</h2>
-            <p><strong>Order ID:</strong> ${orderId}</p>
-            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
-            <p><strong>Service:</strong> ${orderDetails.title}</p>
-            <p><strong>Amount Paid:</strong> $${orderDetails.price}</p>
-          </div>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #1dbf73;">Thank You for Your Purchase!</h1>
         </div>
-      `
+        
+        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+          <h2>Order Details</h2>
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+          <p><strong>Service:</strong> ${orderDetails.title}</p>
+          <p><strong>Amount Paid:</strong> $${orderDetails.price}</p>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center; color: #666;">
+          <p>If you have any questions, please contact our support team.</p>
+          <p>© ${new Date().getFullYear()} FiverrServices. All rights reserved.</p>
+        </div>
+      </div>
+    `
     };
 
     await transporter.sendMail(mailOptions);
