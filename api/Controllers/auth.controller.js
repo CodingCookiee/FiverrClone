@@ -8,11 +8,6 @@ export const register = async (req, res, next) => {
   try {
     const { email, password, username, country } = req.body;
 
-    // Check for all required fields
-    if (!email || !password || !username || !country) {
-      return next(createError(400, "Please provide all required fields"))
-    }
-
     const hash = await bcrypt.hash(password, 10);
     const newUser = new User({
       ...req.body,
@@ -26,6 +21,7 @@ export const register = async (req, res, next) => {
     next(err);
   }
 };
+
 
 // Login a user
 export const login = async (req, res, next) => {

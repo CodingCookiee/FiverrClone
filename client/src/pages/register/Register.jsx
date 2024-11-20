@@ -7,7 +7,11 @@ import upload from "../../utils/upload";
 const Register = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    general: ""
+  });
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -18,9 +22,24 @@ const Register = () => {
     phone: "",
     desc: "",
   });
+  const [validationErrors, setValidationErrors] = useState({
+    username: "",
+    email: "",
+    password: "",
+    country: "",
+  });
 
   const handleChange = (e) => {
-    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    
+    // Clear specific error when user starts typing in the field
+    if (name === 'username') {
+      setErrors(prev => ({ ...prev, username: '' }));
+    } else if (name === 'email') {
+      setErrors(prev => ({ ...prev, email: '' }));
+    }
+    
+    setUser(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSeller = (e) => {
@@ -32,8 +51,53 @@ const Register = () => {
     setFile(selectedFile);
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    // Username validation
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    if (!usernameRegex.test(user.username)) {
+      errors.username = "Username can only contain letters, numbers and underscores";
+      isValid = false;
+    } else if (user.username.length < 5 || user.username.length > 20) {
+      errors.username = "Username must be at least 5 and at most 20 characters long";
+      isValid = false;
+    } 
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(user.email)) {
+      errors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (user.password.length < 8) {
+      errors.password = "Password must be at least 8 characters long";
+      isValid = false;
+    } else if (!passwordRegex.test(user.password)) {
+      errors.password = "Password must contain at least one uppercase letter, one lowercase letter and one number";
+      isValid = false;
+    }
+
+    // Country validation
+    if (!user.country) {
+      errors.country = "Country is required";
+      isValid = false;
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     const url = await upload(file);
     try {
       await newRequest.post("/auth/register", {
@@ -42,15 +106,15 @@ const Register = () => {
       });
       navigate("/login");
     } catch (err) {
-      // Transform error messages into user-friendly format
       if (err.response.data.includes("E11000 duplicate key error")) {
         if (err.response.data.includes("username")) {
-          setError("Username is already taken. Please choose another one.");
+          setErrors(prev => ({...prev, username: "Username is already taken"}));
         } else if (err.response.data.includes("email")) {
-          setError("Email is already registered. Please use another email.");
-        } 
-      } else {
-        setError(err.response.data);
+          setErrors(prev => ({...prev, email: "Email is already registered"}));
+        }
+      }
+      else {
+        setErrors(prev => ({...prev, general: err.response.data}));
       }
     }
   };
@@ -78,6 +142,12 @@ const Register = () => {
             onChange={handleChange}
             value={user.username}
           />
+          {validationErrors.username && (
+            <span className="text-red-500 text-sm">
+              {validationErrors.username}
+            </span>
+          )}
+          {errors.username && <span className="text-red-500">{errors.username}</span>}
           <label htmlFor="email" className="color-[gray] text-[18px]">
             Email<span className="text-red-500">*</span>
           </label>
@@ -91,6 +161,12 @@ const Register = () => {
             onChange={handleChange}
             value={user.email}
           />
+          {validationErrors.email && (
+            <span className="text-red-500 text-sm">
+              {validationErrors.email}
+            </span>
+          )}
+          {errors.email && <span className="text-red-500">{errors.email}</span>}
           <label htmlFor="password" className="color-[gray] text-[18px]">
             Password<span className="text-red-500">*</span>
           </label>
@@ -103,6 +179,11 @@ const Register = () => {
             onChange={handleChange}
             value={user.password}
           />
+          {validationErrors.password && (
+            <span className="text-red-500 text-sm">
+              {validationErrors.password}
+            </span>
+          )}
           <label htmlFor="file" className="color-[gray] text-[18px]">
             Profile Picture
           </label>
@@ -113,7 +194,6 @@ const Register = () => {
             id="file"
             onChange={handleFileChange}
           />
-          
           <label htmlFor="country" className="color-[gray] text-[18px]">
             Country<span className="text-red-500">*</span>
           </label>
@@ -127,7 +207,12 @@ const Register = () => {
             onChange={handleChange}
             value={user.country}
           />
-          {error && <span className="text-red-500">{error}</span>}
+          {validationErrors.country && (
+            <span className="text-red-500 text-sm">
+              {validationErrors.country}
+            </span>
+          )}
+          {errors.general && <span className="text-red-500">{errors.general}</span>}
           <button
             className="bg-[#1dbf73] hover:bg-[#10b981] transition-all text-[white]
              p-[20px] rounded-md border-none font-medium text-[18px] cursor-pointer"
