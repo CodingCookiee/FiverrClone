@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 
-
 const Login = () => {
-  const [identifier, setIdentifier] = useState(""); 
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
@@ -12,11 +11,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Determine if identifier is email or username 
-    const loginData = identifier.includes("@") || identifier.includes("gmail") || identifier.includes(".com") || identifier.includes(".net") || identifier.includes(".org")
-      ? { email: identifier, password }
-      : { username: identifier, password };
+
+    // Determine if identifier is email or username
+    const loginData =
+      identifier.includes("@") ||
+      identifier.includes("gmail") ||
+      identifier.includes(".com") ||
+      identifier.includes(".net") ||
+      identifier.includes(".org")
+        ? { email: identifier, password }
+        : { username: identifier, password };
 
     try {
       const response = await newRequest.post("/auth/login", loginData);
@@ -29,11 +33,12 @@ const Login = () => {
   return (
     <div className="login flex items-center justify-center">
       <div className="login">
-        <form 
+        <form
           onSubmit={handleSubmit}
-          className="w-[300px] h-full p-[100px] pl-0 pr-0 flex flex-col gap-5 ">
+          className="w-[300px] h-full p-[100px] pl-0 pr-0 flex flex-col gap-5 "
+        >
           <h1 className="text-[gray] mb-5 font-light text-3xl">Sign in</h1>
-          
+
           <label htmlFor="identifier" className="text-[gray] text-[18-px]">
             Username or Email
           </label>
@@ -41,10 +46,11 @@ const Login = () => {
             name="identifier"
             type="text"
             id="identifier"
-            placeholder="Enter username or email" 
+            placeholder="Enter username or email"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            className="p-5 border border-solid border-[lightgrey] rounded-md"
+            className="p-[20px] border border-solid border-[lightgrey] rounded-md  
+            shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
           />
 
           <label htmlFor="password" className="text-[gray] text-[18-px]">
@@ -56,9 +62,10 @@ const Login = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="p-5 border border-solid border-[lightgrey] rounded-md"
+            className="p-[20px] border border-solid border-[lightgrey] rounded-md  
+            shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
           />
-          
+
           <button
             type="submit"
             className="border-none p-5 text-white font-medium bg-[#1dbf73]
@@ -67,6 +74,9 @@ const Login = () => {
             Login
           </button>
           {error && <span className="text-red-500">{error}</span>}
+          <Link to="/forgot-password" className="flex flex-col gap-5">
+        <p className="text-[gray] text-[18-px] self-center">Forgot Password?</p>
+        </Link>
         </form>
       </div>
     </div>

@@ -93,3 +93,43 @@ export const logout = (req, res, next) => {
     next(err);
   }
 };
+
+
+export const verifyUserExists = async (req, res, next) => {
+  try {
+    const { identifier } = req.body;
+    
+    let user;
+    if (identifier.includes('@')) {
+      user = await User.findOne({ email: identifier });
+    } else {
+      user = await User.findOne({ username: identifier });
+    }
+    
+    if (!user) {
+      return next(createError(404, "No account found with this email/username"));
+    }
+
+    res.status(200).json({ 
+      message: "User verified successfully",
+      userId: user._id 
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const changePassword = async (req, res, next) => {
+  try {
+    const { userId, newPassword } = req.body;
+    
+    const hash = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(userId, { password: hash });
+
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+

@@ -13,6 +13,8 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import ChangePassword from "./pages/changePassword/ChangePassword";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import {
   createBrowserRouter,
@@ -84,6 +86,14 @@ const App = () => {
         {
           path: "/register",
           element: <Register />,
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/change-password",
+          element: <ChangePassword />,
         },
         {
           path: "/pay/:id",
