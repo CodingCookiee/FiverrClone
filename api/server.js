@@ -46,7 +46,8 @@ app.use(errorHandler);
 app.listen(port, async () => {
   await connectToDatabase();
   console.log(`Server running on https://fiverrclone.up.railway.app/:${port}`);
-  console.log('Backend allowed client:', process.env.CLIENT_URL);
+  console.log(`Backend allowed client: ${process.env.CLIENT_URL}:${process.env.CLIENT_PORT}`);
+
 }).on('error', (err) => {
   if (err.code === 'EACCES') {
     console.log(`Port ${port} requires elevated privileges.`);
