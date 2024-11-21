@@ -14,6 +14,7 @@
  - Tailwind
  - Stripe
  - Jwt
- - RESTful API
+ - RESTful Api
+ - Docker
    
    
