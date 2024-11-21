@@ -1,0 +1,33 @@
+services:
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_URI=mongodb+srv://fiverrdev:fiverrclonedev@fiverrrclone.08b9o.mongodb.net/fiverr?retryWrites=true&w=majority&appName=FiverrrClone
+      - JWT_KEY= e13743a7f1db7f4246badd6fd6ff54ff
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - fiverr-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - api
+    networks:
+      - fiverr-network
+
+networks:
+  fiverr-network:
+    driver: bridge
