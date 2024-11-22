@@ -46,7 +46,7 @@ app.use(errorHandler);
 app.listen(port, async () => {
   await connectToDatabase();
   console.log(`Server running on https://fiverrclone.up.railway.app/:${port}`);
-  console.log(`Backend allowed client: ${process.env.CLIENT_URL}:${process.env.CLIENT_PORT}`);
+  console.log(`Backend allowed client: ${process.env.CLIENT_URL}`);
 
 }).on('error', (err) => {
   if (err.code === 'EACCES') {
@@ -55,3 +55,6 @@ app.listen(port, async () => {
     console.error('Server error:', err);
   }
 });
+
+
+
