@@ -1,6 +1,7 @@
 // server.js
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './config/database.js';
 import userRoute from './routes/user.route.js';
@@ -19,15 +20,18 @@ dotenv.config();
 const port = parseInt(process.env.PORT || '3000', 10);
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
+app.use(cors({
+  origin: [
+    process.env.CLIENT_URL,     
+    'https://www.fiverr.publicvm.com'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
+
+app.use(helmet());
 app.use(express.json()); 
 app.use(cookieParser());
 
@@ -39,9 +43,15 @@ app.use('/api/orders', orderRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/reviews', reviewRoute);
 app.use('/api/conversations', conversationRoute);
+// Add this near your other routes
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString() 
+  });
+});
 
-// Error handling middleware
-app.use(errorHandler);
+
 
 app.listen(port, async () => {
   await connectToDatabase();
