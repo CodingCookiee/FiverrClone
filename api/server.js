@@ -1,7 +1,6 @@
 // server.js
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './config/database.js';
 import userRoute from './routes/user.route.js';
@@ -31,7 +30,6 @@ app.use(cors({
 }));
 
 
-app.use(helmet());
 app.use(express.json()); 
 app.use(cookieParser());
 
