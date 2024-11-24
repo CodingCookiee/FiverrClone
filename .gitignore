@@ -1,1 +1,4 @@
+# ignore docker-compose.yml and task-definition.json    
+*.yml
 task-definition.json
+docker-compose.yml
