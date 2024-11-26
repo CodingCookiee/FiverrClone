@@ -78,7 +78,7 @@ const Login = () => {
           >
             Login
           </button>
-          {error && <span className="text-red-500">{error}</span>}
+          {error && <span className="text-red-500 self-center">{error}</span>}
           <Link to="/forgot-password" className="flex flex-col gap-5">
             <p className="text-[gray] text-[18-px] self-center">Forgot Password?</p>
           </Link>
