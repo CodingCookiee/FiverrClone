@@ -47,14 +47,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong!";
-
-  return res.status(errorStatus).send(errorMessage);
-});
-
-
+app.use(errorHandler);
 
 app.listen(port, async () => {
   await connectToDatabase();
